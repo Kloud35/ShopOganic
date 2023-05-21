@@ -15,60 +15,65 @@ namespace ShopOganicAPI.Services
             dbSet = dbContext.Set<T>();
         }
 
-        public bool Create(T entity)
+        public async Task<bool> CreateAsync(T entity)
         {
             try
             {
-                dbSet.AddAsync(entity);
-                dbContext.SaveChanges();
+                await dbSet.AddAsync(entity);
+                await dbContext.SaveChangesAsync();
                 return true;
             }
             catch (Exception ex)
             {
                 return false;
             }
-
         }
 
-        public bool Delete(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             try
             {
-                var entity = GetById(id);
+                var entity = await GetByIdAsync(id);
                 dbSet.Remove(entity);
-                dbContext.SaveChanges();
+                await dbContext.SaveChangesAsync();
                 return true;
             }
             catch (Exception ex)
             {
                 return false;
             }
-
         }
 
-        public List<T> GetAll()
+        public async Task<List<T>> GetAllAsync()
         {
-            return dbSet.ToList();
+            return await dbSet.ToListAsync();
         }
 
-        public T GetById(Guid id)
+        public async Task<T> GetByIdAsync(Guid id)
         {
-            return dbSet.Find(id);
+            return await dbSet.FindAsync(id);
         }
 
-        public bool Update(T entity)
+        public async Task<bool> UpdateAsync(T entity)
         {
             try
             {
                 dbSet.Update(entity);
-                dbContext.SaveChanges();
+                await dbContext.SaveChangesAsync();
                 return true;
             }
             catch (Exception ex)
             {
                 return false;
             }
-
+        }
+        public async Task<List<T>> SearchAsync(Func<T, bool> predicate)
+        {
+            return await Task.Run(() => dbSet.Where(predicate).ToList());
+        }
+        public async Task<T> FindByAttributeAsync(Func<T, bool> predicate)
+        {
+            return await Task.Run(() => dbSet.FirstOrDefault(predicate));
         }
     }
 }

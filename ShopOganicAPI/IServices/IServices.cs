@@ -3,10 +3,12 @@ namespace ShopOganicAPI.IServices
 {
     public interface IServices<T> where T : class
     {
-        List<T> GetAll();
-        T GetById(Guid id);
-        bool Create(T entity);
-        bool Update(T entity);
-        bool Delete(Guid id);
+        Task<List<T>> GetAllAsync();
+        Task<T> GetByIdAsync(Guid id);
+        Task<bool> CreateAsync(T entity);
+        Task<bool> UpdateAsync(T entity);
+        Task<bool> DeleteAsync(Guid id);
+        Task<List<T>> SearchAsync(Func<T, bool> predicate);
+        Task<T> FindByAttributeAsync(Func<T, bool> predicate);
     }
 }
