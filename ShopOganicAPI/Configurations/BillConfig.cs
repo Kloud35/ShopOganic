@@ -9,7 +9,7 @@ namespace ShopOganicAPI.Configurations
         public void Configure(EntityTypeBuilder<Bill> builder)
         {
             builder.HasKey(p => p.BillID);
-            builder.Property(p => p.BillCode).HasColumnType("varchar(50)");
+            builder.Property(p => p.BillCode).HasColumnType("varchar(50)").IsRequired();
             builder.Property(p => p.PaymentMenthod).HasColumnType("nvarchar(150)");
             builder.Property(p => p.TotalMoney).HasColumnType("decimal(18,2)");
             builder.Property(p => p.ReceiverName).HasColumnType("nvarchar(150)");
