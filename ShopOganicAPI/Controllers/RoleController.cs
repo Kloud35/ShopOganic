@@ -44,13 +44,8 @@ namespace ShopOganicAPI.Controllers
         }
 
         [HttpPost("create-role")]
-        public async Task<bool> CreateRole(string RoleCode, string RoleName, string Description)
+        public async Task<bool> CreateRole(Role role)
         {
-            Role role = new Role();
-            role.RoleID = Guid.NewGuid();
-            role.RoleCode = RoleCode;
-            role.RoleName = RoleName;
-            role.Description = Description;
             return await roleServices.CreateAsync(role);
         }
         [HttpPost("update-role")]

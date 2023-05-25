@@ -30,7 +30,6 @@ namespace ShopOganicAPI.Controllers
                 return Ok(lst);
             }
         }
-
         // GET api/<CategoryController>/5
         [HttpGet("get-category{id}")]
         public async Task<IActionResult> GetCategoryById(Guid id)
@@ -45,23 +44,13 @@ namespace ShopOganicAPI.Controllers
 
         // POST api/<CategoryController>
         [HttpPost("add-category")]
-        public async Task<bool> CreateCategory(string CategoryName, int Status, int Published)
+        public async Task<bool> CreateCategory(Category category)
         {
-            Category category = new Category();
-            category.CategoryID = Guid.NewGuid();
-            category.CategoryName = CategoryName;
-            category.Status = Status;
-            category.Published = Published;
             return await icategoryservices.CreateAsync(category);
         }
         [HttpPost("update-category")]
-        public async Task<bool> UpdateCategory(Guid ID, string CategoryName, int Status, int Published)
+        public async Task<bool> UpdateCategory(Category category)
         {
-            Category category = new Category();
-            category.CategoryID = ID;
-            category.CategoryName = CategoryName;
-            category.Status = Status;
-            category.Published = Published;
             return await icategoryservices.UpdateAsync(category);
         }
 

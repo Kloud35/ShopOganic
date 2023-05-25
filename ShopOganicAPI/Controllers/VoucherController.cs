@@ -38,31 +38,16 @@ namespace ShopOganicAPI.Controllers
 
         // POST api/<VoucherController>
         [HttpPost("create-voucher")]
-        public Task<bool> CreateVoucher(string VoucherName, decimal PercenDiscount, DateTime TimeStart, DateTime TimeEnd, int Status, string Description)
+        public Task<bool> CreateVoucher(Voucher voucher)
         {
-            Voucher voucher = new Voucher();
-            voucher.VoucherName = VoucherName;
-            voucher.PercentDiscount = PercenDiscount;
-            voucher.TimeStart = TimeStart;
-            voucher.TimeEnd = TimeEnd;
-            voucher.Status = Status;
-            voucher.Description = Description;
             return VoucherServices.CreateAsync(voucher);
         }
 
         // PUT api/<VoucherController>/5
         [HttpPut()]
         [Route("update-role")]
-        public async Task<bool> UpdateVoucher(Guid id, string VoucherName, decimal PercenDiscount, DateTime TimeStart, DateTime TimeEnd, int Status, string Description)
+        public async Task<bool> UpdateVoucher(Voucher voucher)
         {
-            Voucher voucher = new Voucher();
-            voucher.VoucherID = id;
-            voucher.VoucherName = VoucherName;
-            voucher.PercentDiscount = PercenDiscount;
-            voucher.TimeStart = TimeStart;
-            voucher.TimeEnd = TimeEnd;
-            voucher.Status = Status;
-            voucher.Description = Description;
             return await VoucherServices.UpdateAsync(voucher);
         }
 

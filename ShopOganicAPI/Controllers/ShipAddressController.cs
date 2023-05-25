@@ -42,21 +42,15 @@ namespace ShopOganicAPI.Controllers
 
         // POST api/<ShipAddressController>
         [HttpPost("create-shipaddress")]
-        public async Task<bool> CreateShipAddress(string Address)
+        public async Task<bool> CreateShipAddress(ShipAddress shipAddress)
         {
-            ShipAddress shipAddress = new ShipAddress();
-            shipAddress.ShipAddressID = Guid.NewGuid();
-            shipAddress.Address = Address;
             return await shipAddressService.CreateAsync(shipAddress);
         }
 
         // PUT api/<ShipAddressController>/5
         [HttpPost("update-shipaddress")]
-        public async Task<bool> UpdateShipAddress(Guid ID, string Address)
+        public async Task<bool> UpdateShipAddress(ShipAddress shipAddress)
         {
-            ShipAddress shipAddress = new ShipAddress();
-            shipAddress.ShipAddressID = ID;
-            shipAddress.Address = Address;
             return await shipAddressService.UpdateAsync(shipAddress);
         }
 

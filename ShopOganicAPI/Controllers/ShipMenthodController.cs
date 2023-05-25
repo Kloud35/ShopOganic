@@ -42,25 +42,15 @@ namespace ShopOganicAPI.Controllers
 
         // POST api/<ShipMethodController>
         [HttpPost("create-shipmenthod")]
-        public async Task<bool> UpdateShipMenthod(string ShippingMenthodName, decimal ShipPrice, int Status)
+        public async Task<bool> CreateShipMenthod(ShipMenthod shipMenthod)
         {
-            ShipMenthod shipMenthod = new ShipMenthod();
-            shipMenthod.ShipMenthodID = Guid.NewGuid();
-            shipMenthod.ShippingMenthodName = ShippingMenthodName;
-            shipMenthod.ShipPrice = ShipPrice;
-            shipMenthod.Status = Status;
             return await shipMenthodService.CreateAsync(shipMenthod);
         }
 
         // PUT api/<ShipMethodController>/5
         [HttpPost("update-shipsenthod")]
-        public async Task<bool> UpdateShipMenthod(Guid ID, string ShippingMenthodName, decimal ShipPrice, int Status)
+        public async Task<bool> UpdateShipMenthod(ShipMenthod shipMenthod)
         {
-            ShipMenthod shipMenthod = new ShipMenthod();
-            shipMenthod.ShipMenthodID = ID;
-            shipMenthod.ShippingMenthodName = ShippingMenthodName;
-            shipMenthod.ShipPrice = ShipPrice;
-            shipMenthod.Status = Status;
             return await shipMenthodService.UpdateAsync(shipMenthod);
         }
 

@@ -15,8 +15,7 @@ namespace ShopOganicAPI.Controllers
 
         public BillController()
         {
-            Services<Bill> _billservice = new Services<Bill>();
-            _ibillservice = _billservice;
+            _ibillservice = new Services<Bill>(); ;
         }
         // GET: api/<BillController>
         [HttpGet("get-all-bill")]
@@ -38,49 +37,15 @@ namespace ShopOganicAPI.Controllers
 
         // POST api/<BillController>
         [HttpPost("create-bill")]
-        public async Task<bool> CreateBill(Guid customerid, Guid voucherid, Guid shipaddressid, Guid shipmenthodid, string billcode, string paymentmenthod, decimal totalmoney, string receivername, string customerphone, string addressdelivery, int status)
+        public async Task<bool> CreateBill(Bill bill)
         {
-          
-            Bill bill = new Bill()
-            {
-                BillID = Guid.NewGuid(),
-                CustomerID = customerid,
-                VoucherID = voucherid,
-                ShipAddressID = shipaddressid,
-                ShipMenthodID = shipmenthodid,
-                BillCode = billcode,
-                PaymentMenthod = paymentmenthod,
-                TotalMoney = totalmoney,
-                ReceiverName = receivername,
-                CustomerPhone = customerphone,
-                AddressDelivery = addressdelivery,
-                CreatedDate = DateTime.Now,
-                Status = status
-            };
             return await _ibillservice.CreateAsync(bill);
         }
 
         // PUT api/<BillController>/5
         [HttpPost("update-bill/{id}")]
-        public async Task<bool> UpdateBill(Guid id, Guid customerid, Guid voucherid, Guid shipaddressid, Guid shipmenthodid, string billcode, string paymentmenthod, decimal totalmoney, string receivername, string customerphone, string addressdelivery, int status)
+        public async Task<bool> UpdateBill(Bill bill)
         {
-           
-            Bill bill = new Bill()
-            {
-                BillID = id,
-                CustomerID = customerid,
-                VoucherID = voucherid,
-                ShipAddressID = shipaddressid,
-                ShipMenthodID = shipmenthodid,
-                BillCode = billcode,
-                PaymentMenthod = paymentmenthod,
-                TotalMoney = totalmoney,
-                ReceiverName = receivername,
-                CustomerPhone = customerphone,
-                AddressDelivery = addressdelivery,
-                CreatedDate = DateTime.Now,
-                Status = status
-            };
             return await _ibillservice.UpdateAsync(bill);
         }
 

@@ -15,8 +15,8 @@ namespace ShopOganicAPI.Controllers
 
         public PaymentMenthodDetailsController()
         {
-            Services<PaymentMenthodDetail> _paymentmenthoddetailservice = new Services<PaymentMenthodDetail>();
-            _ipaymentmenthoddetailservice = _paymentmenthoddetailservice;
+
+            _ipaymentmenthoddetailservice = new Services<PaymentMenthodDetail>();
         }
         // GET: api/<PaymentMenthodDetailsController>
         [HttpGet("get-all-payment-menthod-detail")]
@@ -38,31 +38,16 @@ namespace ShopOganicAPI.Controllers
 
         // POST api/<PaymentMenthodDetailsController>
         [HttpPost("create-payment-menthod-detail")]
-        public async Task<bool> CreatePaymentMenthodDetail(Guid paymentmenthodid, Guid billid, string description)
+        public async Task<bool> CreatePaymentMenthodDetail(PaymentMenthodDetail paymentMenthodDetail)
         {
-           
-            PaymentMenthodDetail paymentMenthodDetail = new PaymentMenthodDetail()
-            {
-                PaymentMenthodDetailID = Guid.NewGuid(),
-                PaymentMenthodID = paymentmenthodid,
-                BillID = billid,
-                Description = description
-            };
+
             return await _ipaymentmenthoddetailservice.CreateAsync(paymentMenthodDetail);
         }
 
         // PUT api/<PaymentMenthodDetailsController>/5
         [HttpPost("update-payment-menthod-detail/{id}")]
-        public async Task<bool> UpdatePaymentMenthodDetail(Guid id, Guid paymentmenthodid, Guid billid, string description)
+        public async Task<bool> UpdatePaymentMenthodDetail(PaymentMenthodDetail paymentMenthodDetail)
         {
-           
-            PaymentMenthodDetail paymentMenthodDetail = new PaymentMenthodDetail()
-            {
-                PaymentMenthodDetailID = id,
-                PaymentMenthodID = paymentmenthodid,
-                BillID = billid,
-                Description = description
-            };
             return await _ipaymentmenthoddetailservice.UpdateAsync(paymentMenthodDetail);
         }
 

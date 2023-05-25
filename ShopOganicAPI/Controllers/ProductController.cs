@@ -42,31 +42,13 @@ namespace ShopOganicAPI.Controllers
 
         // POST api/<ProductController>
         [HttpPost("add-product")]
-        public async Task<bool> CreateProduct(string ProductName, string Description, decimal Price, int Quantity, DateTime CreatedDate, string ImageUrl, int Status)
+        public async Task<bool> CreateProduct(Product product)
         {
-            Product product = new Product();
-            product.ProductID = Guid.NewGuid();
-            product.ProductName = ProductName;
-            product.Description = Description;
-            product.Price = Price;
-            product.Quantity = Quantity;
-            product.CreatedDate = CreatedDate;
-            product.ImageUrl = ImageUrl;
-            product.Status = Status;
             return await iproductservices.CreateAsync(product);
         }
         [HttpPost("update-product")]
-        public async Task<bool> UpdateProduct(Guid ID, string ProductName, string Description, decimal Price, int Quantity, DateTime CreatedDate, string ImageUrl, int Status)
+        public async Task<bool> UpdateProduct(Product product)
         {
-            Product product = new Product();
-            product.ProductID = ID;
-            product.ProductName = ProductName;
-            product.Description = Description;
-            product.Price = Price;
-            product.Quantity = Quantity;
-            product.CreatedDate = CreatedDate;
-            product.ImageUrl = ImageUrl;
-            product.Status = Status;
             return await iproductservices.UpdateAsync(product);
         }
 

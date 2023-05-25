@@ -15,8 +15,7 @@ namespace ShopOganicAPI.Controllers
         private readonly IServices<PaymentMenthod> _ipaymentmenthodservices;
         public PaymentMenthodController()
         {
-            Services<PaymentMenthod> _paymentmenthodservices = new Services<PaymentMenthod>();
-            _ipaymentmenthodservices = _paymentmenthodservices;
+            _ipaymentmenthodservices = new Services<PaymentMenthod>();
         }
         // GET: api/<PaymentMenthodController>
         [HttpGet("get-all-paymentmenthod")]
@@ -38,25 +37,15 @@ namespace ShopOganicAPI.Controllers
 
         // POST api/<PaymentMenthodController>
         [HttpPost("create-paymentmenthod")]
-        public async Task<bool> CreatePaymentMenthod(string paymentmenthodname)
+        public async Task<bool> CreatePaymentMenthod(PaymentMenthod paymentMenthod)
         {
-            PaymentMenthod paymentMenthod = new PaymentMenthod()
-            {
-                PaymentMenthodID = Guid.NewGuid(),
-                PaymentMenthodName = paymentmenthodname
-            };
             return await _ipaymentmenthodservices.CreateAsync(paymentMenthod);
         }
 
         // PUT api/<PaymentMenthodController>/5
         [HttpPost("update-paymentmenthod/{id}")]
-        public async Task<bool> UpdatePayMentMenthod(Guid id, string paymentmenthodname)
+        public async Task<bool> UpdatePayMentMenthod(PaymentMenthod paymentMenthod)
         {
-            PaymentMenthod paymentMenthod = new PaymentMenthod()
-            {
-                PaymentMenthodID = id,
-                PaymentMenthodName = paymentmenthodname
-            };
             return await _ipaymentmenthodservices.UpdateAsync(paymentMenthod);
         }
 
@@ -68,4 +57,3 @@ namespace ShopOganicAPI.Controllers
         }
     }
 }
-    
