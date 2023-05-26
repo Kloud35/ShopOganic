@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ShopOganicAPI.IServices;
 using ShopOganicAPI.Models;
 using ShopOganicAPI.Services;
@@ -12,10 +13,15 @@ namespace ShopOganicAPI.Controllers
     public class BillController : ControllerBase
     {
         private readonly IServices<Bill> _ibillservice;
-
+        private readonly IServices<BillDetail> _ibillDetailservice;
+        private readonly IServices<Product> _iProduct;
+        private readonly IServices<Voucher> _iVoucher;
         public BillController()
         {
-            _ibillservice = new Services<Bill>(); ;
+            _ibillservice = new Services<Bill>();
+            _ibillDetailservice = new Services<BillDetail>();
+            _iProduct = new Services<Product>();
+            _iVoucher = new Services<Voucher>();
         }
         // GET: api/<BillController>
         [HttpGet("get-all-bill")]
@@ -37,9 +43,42 @@ namespace ShopOganicAPI.Controllers
 
         // POST api/<BillController>
         [HttpPost("create-bill")]
-        public async Task<bool> CreateBill(Bill bill)
+        public async Task<bool> CreateBill(BillModel billModel)
         {
-            return await _ibillservice.CreateAsync(bill);
+            var bill = await _ibillservice.CreateAsync(billModel.Bill);
+            decimal totalBillMoney = 0;
+            var voucher = await _iVoucher.GetByIdAsync(billModel.Bill.VoucherID);
+            if (bill)
+            {
+                foreach (var item in billModel.BillDetail)
+                {
+                    var product = await _iProduct.GetByIdAsync(item.ProductID);
+                    item.BillID = billModel.Bill.BillID;
+                    var model = await _ibillDetailservice.FindByAttributeAsync(p => p.BillID == billModel.Bill.BillID && p.ProductID == item.ProductID);
+                    if (model == null)
+                    {
+                        item.Price = (decimal)product.Price;
+                        item.TotalMoney = item.Price * item.Quantity;
+                        await _ibillDetailservice.CreateAsync(item);
+                    }
+                    else
+                    {
+                        model.Price = (decimal)product.Price;
+                        item.TotalMoney = model.Price * item.Quantity;
+                        model.Quantity += item.Quantity;
+                        model.TotalMoney = model.Price * model.Quantity;
+                        await _ibillDetailservice.UpdateAsync(model);
+                    }
+                    totalBillMoney += item.TotalMoney;
+                    product.Quantity -= item.Quantity;
+                    await _iProduct.UpdateAsync(product);
+                }
+                billModel.Bill.TotalMoney = totalBillMoney - (totalBillMoney * (voucher.PercentDiscount / 100));
+                billModel.Bill.Status = 1;
+                await _ibillservice.UpdateAsync(billModel.Bill);
+                return true;
+            }
+            return false;
         }
 
         // PUT api/<BillController>/5
@@ -47,13 +86,6 @@ namespace ShopOganicAPI.Controllers
         public async Task<bool> UpdateBill(Bill bill)
         {
             return await _ibillservice.UpdateAsync(bill);
-        }
-
-        // DELETE api/<BillController>/5
-        [HttpDelete("delete-bill/{id}")]
-        public async Task<bool> DeleteBill(Guid id)
-        {
-            return await _ibillservice.DeleteAsync(id);
         }
     }
 }

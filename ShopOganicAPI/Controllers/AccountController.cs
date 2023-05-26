@@ -43,7 +43,6 @@ namespace ShopOganicAPI.Controllers
         [HttpPost("create-account")]
         public async Task<bool> CreateAccount(Account account)
         {
-            
             return await accountServices.CreateAsync(account);
         }
         [HttpPost("update-account")]
