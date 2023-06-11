@@ -1,0 +1,62 @@
+﻿@model IEnumerable<ShopOganicAPI.Models.Category>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Published)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryName)
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.Status)*@
+                    @if (item.Status == 1)
+                    {
+                        <div class="d-flex align-items-center">
+                            <div class="badge badge-success badge-dot m-r-10"></div>
+                            <div>Đang hoạt động</div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="d-flex align-items-center">
+                            <div class="badge badge-danger badge-dot m-r-10"></div>
+                            <div>Không hoạt động</div>
+                        </div>
+                    }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Published)
+            </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.CategoryID" class="btn btn-info m-r-5">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.CategoryID" class="btn btn-warning m-r-5">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.CategoryID" class="btn btn-danger m-r-5" onclick="return confirm('Xác nhận xóa ?');" )>Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

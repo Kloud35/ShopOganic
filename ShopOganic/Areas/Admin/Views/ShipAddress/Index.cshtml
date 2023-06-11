@@ -1,0 +1,39 @@
+﻿@model IEnumerable<ShopOganicAPI.Models.ShipAddress>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-area="Admin" asp-controller="ShipAddress" asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShipAddressID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ShipAddressID}) |
+                @Html.ActionLink("Details", "Details", new {id = item.ShipAddressID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ShipAddressID })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

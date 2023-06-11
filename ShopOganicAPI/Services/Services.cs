@@ -75,5 +75,19 @@ namespace ShopOganicAPI.Services
         {
             return await Task.Run(() => dbSet.FirstOrDefault(predicate));
         }
+
+        public async Task<bool> CreateListAsync(List<T> entities)
+        {
+            try
+            {
+                await dbSet.AddRangeAsync(entities);
+                await dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }

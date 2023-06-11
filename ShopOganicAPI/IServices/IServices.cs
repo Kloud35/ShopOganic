@@ -8,7 +8,9 @@ namespace ShopOganicAPI.IServices
         Task<bool> CreateAsync(T entity);
         Task<bool> UpdateAsync(T entity);
         Task<bool> DeleteAsync(Guid id);
+        Task<bool> CreateListAsync(List<T> entities);
         Task<List<T>> SearchAsync(Func<T, bool> predicate);
         Task<T> FindByAttributeAsync(Func<T, bool> predicate);
+
     }
 }

@@ -1,12 +1,17 @@
-﻿namespace ShopOganicAPI.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ShopOganicAPI.Models
 {
     public class Product
     {
         public Guid ProductID { get; set; }
-        public string? ProductName { get; set; }
+        [Required(ErrorMessage ="Vui lòng nhập tên sản phẩm.")]
+        public string ProductName { get; set; }
         public string? Description { get; set; }
-        public decimal? Price { get; set; }
-        public int? Quantity { get; set; }
+        [Required(ErrorMessage = "Vui lòng nhập giá sản phẩm.")]
+        public decimal Price { get; set; }
+        [Required(ErrorMessage = "Vui lòng nhập số lượng sản phẩm.")]
+        public int Quantity { get; set; }
         public DateTime? CreatedDate { get; set; }
         public string? ImageUrl { get; set; }
         public int? Status { get; set; }

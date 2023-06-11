@@ -1,0 +1,95 @@
+﻿@model IEnumerable<ShopOganicAPI.Models.Voucher>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+            <span class="breadcrumb-item" href="#">Quản lý hệ thống</span>
+            <a class="breadcrumb-item active" href="#">Quản lý quyền truy cập</a>
+        </nav>
+    </div>
+</div>
+<div class="row m-b-30">
+    <div class="col-lg text-right">
+        <a class="btn btn-primary" asp-area="Admin" asp-controller="VouchersAdmin" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i><span>Thêm mới</span></a>
+    </div>
+
+</div>
+
+<table class="table">
+    <thead class="text-center">
+        <tr>
+            <th scope="col">
+                Tên Voucher
+            </th>
+            <th scope="col">
+                Giảm giá
+            </th>
+            <th scope="col">
+                Thời gian bắt đầu
+            </th>
+            <th scope="col">
+                Thời gian kết thúc
+            </th>
+            <th scope="col">
+                Trạng thái
+            </th>
+            <th scope="col">
+                Mô tả
+            </th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody class="text-center">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.VoucherName
+                </td>
+                <td>
+                    @item.PercentDiscount %
+                </td>
+                <td>
+                    @item.TimeStart?.ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @item.TimeEnd?.ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @if (item.Status == 0 || item.TimeEnd < DateTime.Now )
+                    {
+                        <div class="d-flex align-items-center">
+                            <div class="badge badge-danger badge-dot m-r-10"></div>
+                            <div>Hết hạn</div>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="d-flex align-items-center">
+                            <div class="badge badge-success badge-dot m-r-10"></div>
+                            <div>Đang sử dụng</div>
+                        </div>
+                    }
+
+                </td>
+                <td>
+                    @item.Description
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.VoucherID" class="btn btn-info m-r-5">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.VoucherID" class="btn btn-warning m-r-5">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.VoucherID" class="btn btn-danger m-r-5" onclick="return confirm('Xác nhận xóa Voucher này?');" )>Delete</a>
+
+                </td>
+            </tr>
+        }
+        
+    </tbody>
+</table>

@@ -82,10 +82,20 @@ namespace ShopOganicAPI.Controllers
         }
 
         // PUT api/<BillController>/5
-        [HttpPost("update-bill/{id}")]
+        [HttpPost("update-bill")]
         public async Task<bool> UpdateBill(Bill bill)
         {
             return await _ibillservice.UpdateAsync(bill);
+        }
+        [HttpGet("get-billdetail/{id}")]
+        public async Task<IActionResult> GetBillDetail(Guid id)
+        {
+            var billDetail = await _ibillDetailservice.SearchAsync(p=>p.BillID == id);
+            if (billDetail == null)
+            {
+                return BadRequest(string.Empty);
+            }
+            return Ok(billDetail);
         }
     }
 }

@@ -1,0 +1,48 @@
+﻿@model ShopOganicAPI.Models.PaymentMenthod
+
+@{
+    ViewData["Title"] = "Update";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+            <span class="breadcrumb-item" href="#">Category I</span>
+            <a class="breadcrumb-item active" href="#">Category II</a>
+        </nav>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Update">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="PaymentMenthodID" class="form-control"/>
+            <div class="form-group">
+                <label asp-for="PaymentMenthodName" class="control-label"></label>
+                <input asp-for="PaymentMenthodName" class="form-control" />
+                <span asp-validation-for="PaymentMenthodName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <br />
+                <input type="radio" asp-for="Status" value="1" /> Đang áp dụng<br />
+                <input type="radio" asp-for="Status" value="0" /> Không áp dụng<br />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="PaymentMenthod">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,116 @@
+﻿@model IEnumerable<ShopOganicAPI.Models.PaymentMenthod>
+@{
+    ViewData["Title"] = "PaymenMenthod";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+            <span class="breadcrumb-item" href="#">Category I</span>
+            <a class="breadcrumb-item active" href="#">Category II</a>
+        </nav>
+    </div>
+</div>
+<div class="row m-b-30">
+    <div class="col-lg text-right">
+        <a class="btn btn-primary" asp-area="Admin" asp-controller="PaymentMenthod" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i><span>Create</span></a>
+    </div>
+</div>
+<table class="table">
+    <thead>
+    <tr class="table-info">
+        <th class="text-center">
+            STT
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            Status
+        </th>
+        <th>Update Status</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        var index = Model.ToList().FindIndex(p => p.PaymentMenthodID == item.PaymentMenthodID) + 1;
+        <tr>
+            <th class="text-center">
+                @index
+            </th>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentMenthodName)
+            </td>
+            <td>
+                @if (item.Status == 1)
+                {
+                    <div class="d-flex align-items-center">
+                            <div id="status-badge_@index" class="badge badge-success badge-dot m-r-10"></div>
+                            <div id="status-text_@index">Đang áp dụng</div>
+                    </div>
+                }
+                else
+                {
+                    <div class="d-flex align-items-center">
+                            <div id="status-badge_@index" class="badge badge-danger badge-dot m-r-10"></div>
+                            <div id="status-text_@index">Không áp dụng</div>
+                    </div>
+                }
+            </td>
+            <td>
+                    <a id="updateStatus_@index" data-Index="@index" data-Id="@item.PaymentMenthodID" class="btn btn-success m-r-5">Change</a>
+            </td>
+            <td class="text-right">
+                <a asp-action="Update" asp-route-id="@item.PaymentMenthodID" class="btn btn-info m-r-5">Edit</a>
+                <a asp-action="Details" asp-route-id="@item.PaymentMenthodID" class="btn btn-warning m-r-5">Details</a>
+                <a asp-action="Delete" asp-route-id="@item.PaymentMenthodID" class="btn btn-danger m-r-5">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+@section Scripts
+{
+    <script>
+        // JavaScript code
+        $(document).ready(function () {
+            $(document).on('click', '[id^="updateStatus_"]', function () {
+                var Index = $(this).data("index");
+                console.log(Index);
+                var Id = $(this).data("id");
+                console.log(Id);
+
+                // Send Ajax request
+                $.ajax({
+                    url: `/Admin/PaymentMenthod/ChangeStatus?Id=${Id}`,
+                    type: 'POST',
+                    data: JSON.stringify({ Id: Id }),
+                    dataType: 'json',
+                    contentType: 'application/json;charset=utf-8',
+                    success: function (response) {
+                        console.log(response);
+                        if (response.success){
+                            var statusBadge = document.getElementById("status-badge_" + Index);
+                            var statusText = document.getElementById("status-text_" + Index);
+                            if (response.status == 1) {
+                                statusBadge.classList.remove("badge-danger");
+                                statusBadge.classList.add("badge-success");
+                                statusText.innerText = "Đang áp dụng";
+                            } else {
+                                statusBadge.classList.remove("badge-success");
+                                statusBadge.classList.add("badge-danger");
+                                statusText.innerText = "Không áp dụng";
+                            }
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('Đã xảy ra lỗi: ' + error);
+                    }
+                });
+            });
+        });
+    </script>
+}

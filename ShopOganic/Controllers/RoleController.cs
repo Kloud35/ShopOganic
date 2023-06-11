@@ -48,9 +48,11 @@ namespace ShopOganic.Controllers
             {
                 var client = new HttpClient();
 
-                var apiUrl = $"https://localhost:7186/api/Role/create-role?RoleCode={role.RoleCode}&RoleName={role.RoleName}&Description={role.Description}";
-                var request = new HttpRequestMessage(HttpMethod.Post, apiUrl);
-                var response = await client.SendAsync(request);
+                //var apiUrl = $"https://localhost:7186/api/Role/create-role?RoleCode={role.RoleCode}&RoleName={role.RoleName}&Description={role.Description}";
+                var apiUrl = $"https://localhost:7186/api/Role/create-role";
+
+               
+                var response = await client.PostAsync(apiUrl, new StringContent(JsonConvert.SerializeObject(role), Encoding.UTF8, "application/json"));
                 if (response.IsSuccessStatusCode)
                 {
                     return RedirectToAction(nameof(Index));
@@ -76,7 +78,6 @@ namespace ShopOganic.Controllers
                 var role = JsonConvert.DeserializeObject<Role>( await response.Content.ReadAsStringAsync());
                 return View(role);
             }
-           
             return RedirectToAction(nameof(Index));
         }
 

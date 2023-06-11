@@ -1,0 +1,51 @@
+﻿@model IEnumerable<ShopOganicAPI.Models.Role>
+
+@{
+	ViewData["Title"] = "Index";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+	<a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.RoleCode)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.RoleName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Description)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.RoleCode)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.RoleName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Description)
+				</td>
+				<td>
+					<a asp-action="Edit" asp-route-id="@item.RoleID" class="btn btn-info m-r-5">Edit</a>
+					<a asp-action="Details" asp-route-id="@item.RoleID" class="btn btn-warning m-r-5">Details</a>
+					<a asp-action="Delete" asp-route-id="@item.RoleID" class="btn btn-danger m-r-5" onclick="return confirm('Xác nhận xóa Voucher này?');" )>Delete</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+

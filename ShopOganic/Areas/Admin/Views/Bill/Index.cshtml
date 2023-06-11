@@ -1,0 +1,59 @@
+﻿@model IEnumerable<ShopOganicAPI.Models.Bill>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var listStatus = (List<string>)ViewBag.Status;
+}
+
+<h1>Index</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            
+            <th>@Html.DisplayNameFor(model => model.BillCode)</th>
+            <th>@Html.DisplayNameFor(model => model.PaymentMenthod)</th>
+            <th>@Html.DisplayNameFor(model => model.TotalMoney)</th>
+            <th>@Html.DisplayNameFor(model => model.ReceiverName)</th>
+            <th>@Html.DisplayNameFor(model => model.CustomerPhone)</th>
+            <th>@Html.DisplayNameFor(model => model.AddressDelivery)</th>
+            <th>@Html.DisplayNameFor(model => model.CreatedDate)</th>
+            <th>@Html.DisplayNameFor(model => model.Status)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+              
+                <td>@Html.DisplayFor(modelItem => item.BillCode)</td>
+                <td>@Html.DisplayFor(modelItem => item.PaymentMenthod)</td>
+                <td>@Html.DisplayFor(modelItem => item.TotalMoney)</td>
+                <td>@Html.DisplayFor(modelItem => item.ReceiverName)</td>
+                <td>@Html.DisplayFor(modelItem => item.CustomerPhone)</td>
+                <td>@Html.DisplayFor(modelItem => item.AddressDelivery)</td>
+                <td>@Html.DisplayFor(modelItem => item.CreatedDate)</td>
+                <td>
+                    <select class="custom-select form-select-lg status-select" name="status" data-bill-id="@item.BillID" style="border:solid 1px black">
+                        @foreach (var status in listStatus)
+                        {
+                            <option value="@listStatus.IndexOf(status)" selected="@(item.Status == listStatus.IndexOf(status) ? "selected" : null)">@status</option>
+                        }
+                    </select>
+
+
+
+
+                </td>
+                <td>
+                    <a asp-area="Admin" asp-controller="Bill" asp-action="Details" asp-route-id="@item.BillID" class="btn btn-warning m-r-5">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/change_bill_status.js" asp-append-version="true"></script>

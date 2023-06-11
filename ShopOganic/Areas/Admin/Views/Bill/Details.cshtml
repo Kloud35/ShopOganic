@@ -1,0 +1,56 @@
+﻿@model ShopOganic.Areas.Admin.ViewModels.BillDetailViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Bill.BillCode)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Bill.BillCode)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Bill.PaymentMenthod)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Bill.PaymentMenthod)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Bill.CreatedDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Bill.CreatedDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Bill.ReceiverName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Bill.ReceiverName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Bill.CustomerPhone)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Bill.CustomerPhone)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Bill.TotalMoney)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Bill.TotalMoney)
+        </dd>
+    </dl>
+    <dl>
+
+    </dl>
+</div>
+<div>
+    
+    <a asp-action="Index">Back to List</a>
+</div>

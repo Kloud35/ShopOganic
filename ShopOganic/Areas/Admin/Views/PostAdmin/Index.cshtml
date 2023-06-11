@@ -1,0 +1,162 @@
+﻿@model IEnumerable<ShopOganicAPI.Models.Post>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+@*<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contents)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Alias)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Author)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tags)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsHot)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Account)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Contents)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImageUrl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Alias)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tags)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsHot)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Account.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.CategoryID)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.PostID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.PostID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.PostID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>*@
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30 text-right">
+            <div class="col-lg">
+                <a class="btn btn-primary" asp-area="Admin" asp-controller="PostAdmin" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i><span>Thêm mới</span></a>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover e-commerce-table">
+                <thead>
+                    <tr>
+                        <th>Tiêu đề</th>
+                        <th>Ảnh</th>
+                        <th>Ngày tạo</th>
+                        <th>Trạng thái</th>
+                        <th>Người viết</th>
+                        <th>#</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Title</td>
+                                <td>
+                                    <img width="70" height="70" src="~/images/news/@item.ImageUrl" />
+                                </td>
+                                <td>@item.CreatedDate</td>
+                                <td>
+                                    @if (item.IsHot == true)
+                                    {
+
+
+                                        <div class="d-flex align-items-center">
+                                            <div class="badge badge-success badge-dot m-r-10"></div>
+                                            <div>Tin Hot</div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="d-flex align-items-center">
+                                            <div class="badge badge-success badge-dot m-r-10"></div>
+                                            <div>Non-Hot</div>
+                                        </div>
+                                    }
+                                </td>
+                                <td>
+                                    @item.Author
+                                </td>
+                                <td>
+                                    <a class="btn btn-primary btn-tone m-r-5" asp-area="Admin" asp-controller="PostAdmin" asp-action="Details" asp-route-id="@item.PostID">Chi tiết</a>
+                                    <a class="btn btn-secondary btn-tone m-r-5" asp-area="Admin" asp-controller="PostAdmin" asp-action="Edit" asp-route-id="@item.PostID">Sửa</a>
+                                    <a asp-action="Delete" asp-route-id="@item.PostID" class="btn btn-danger m-r-5" onclick="return confirm('Xác nhận xóa tin tức này?');" )>Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+            <div aria-label="Page navigation example">
+                <ul class="pagination">
+                    <pager class="pager-container" list="@Model" asp-area="Admin" asp-controller="PostAdmin" asp-action="Index" />
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+

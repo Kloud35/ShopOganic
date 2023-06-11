@@ -1,0 +1,132 @@
+﻿@model ShopOganicAPI.Models.Account
+
+@{
+	ViewData["Title"] = "Details";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+	<h4>Account</h4>
+	<hr />
+	<dl class="row">
+		
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.AccountName)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.AccountName)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.ImageUrl)
+		</dt>
+		<dd class="col-sm-10">
+			<img height="100px" src="/images/@Model.ImageUrl"></img>
+			@*D:\Desktop\Máy tính\Ki6\Net5\ahihi\ShopOganic\wwwroot\images\1.jpg
+		*@</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Password)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Password)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Email)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Email)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.FullName)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.FullName)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.PhoneNumber)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.PhoneNumber)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Address)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Address)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Gender)
+		</dt>
+		<dd class="col-sm-10">
+			@if (@Model.Gender)
+			{
+				<div class="d-flex align-items-center">
+
+					<div>Nam</div>
+				</div>
+			}
+			else
+			{
+				<div class="d-flex align-items-center">
+
+					<div>Nữ</div>
+				</div>
+			}
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.DateOfBirth)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.DateOfBirth)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.CreatedDate)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.CreatedDate)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.LastLogin)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.LastLogin)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayName("Active")
+		</dt>
+		<dd class="col-sm-10">
+			@if (@Model.IsActive)
+			{
+				<div class="d-flex align-items-center">
+
+					<div>Hoạt động</div>
+				</div>
+			}
+			else
+			{
+				<div class="d-flex align-items-center">
+
+					<div>Không hoạt động</div>
+				</div>
+			}
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Role)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DropDownList("RoleID",(IEnumerable<SelectListItem>)ViewBag.lstRole as SelectList,"Role",new {@class="form-control"})
+
+
+		</dd>
+	</dl>
+</div>
+<div>
+	<a asp-action="Edit" asp-route-id="@Model.AccountID">Edit</a> |
+	<a asp-action="Index">Back to List</a>
+</div>
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}
