@@ -7,8 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Helper.zip" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCoreHero.ToastNotification" Version="1.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.13" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="PagedList.Core.Mvc" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,8 +22,56 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Admin\Models\" />
+    <None Include="Areas\Admin\Views\AccountAdmin\Create.cshtml" />
+    <None Include="Areas\Admin\Views\AccountAdmin\Details.cshtml" />
+    <None Include="Areas\Admin\Views\AccountAdmin\Edit.cshtml" />
+    <None Include="Areas\Admin\Views\AccountAdmin\Index.cshtml" />
+    <None Include="Areas\Admin\Views\Category\Create.cshtml" />
+    <None Include="Areas\Admin\Views\Category\Details.cshtml" />
+    <None Include="Areas\Admin\Views\Category\Edit.cshtml" />
+    <None Include="Areas\Admin\Views\Category\Index.cshtml" />
+    <None Include="Areas\Admin\Views\LoginAdmin\Index.cshtml" />
+    <None Include="Areas\Admin\Views\PaymentMenthod\Create.cshtml" />
+    <None Include="Areas\Admin\Views\PaymentMenthod\Details.cshtml" />
+    <None Include="Areas\Admin\Views\PaymentMenthod\PaymentMenthod.cshtml" />
+    <None Include="Areas\Admin\Views\PaymentMenthod\Update.cshtml" />
+    <None Include="Areas\Admin\Views\PostAdmin\Create.cshtml" />
+    <None Include="Areas\Admin\Views\PostAdmin\Edit.cshtml" />
+    <None Include="Areas\Admin\Views\PostAdmin\Index.cshtml" />
+    <None Include="Areas\Admin\Views\Product\Create.cshtml" />
+    <None Include="Areas\Admin\Views\Product\Details.cshtml" />
+    <None Include="Areas\Admin\Views\Product\Edit.cshtml" />
+    <None Include="Areas\Admin\Views\Product\Index.cshtml" />
+    <None Include="Areas\Admin\Views\Product\Product.cshtml" />
+    <None Include="Areas\Admin\Views\RolesAdmin\Create.cshtml" />
+    <None Include="Areas\Admin\Views\RolesAdmin\Details.cshtml" />
+    <None Include="Areas\Admin\Views\RolesAdmin\Edit.cshtml" />
+    <None Include="Areas\Admin\Views\RolesAdmin\Index.cshtml" />
+    <None Include="Areas\Admin\Views\Role\Index.cshtml" />
+    <None Include="Areas\Admin\Views\Shared\Error.cshtml" />
+    <None Include="Areas\Admin\Views\Shared\_LayoutAdmin.cshtml" />
+    <None Include="Areas\Admin\Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="Areas\Admin\Views\ShipAddress\Create.cshtml" />
+    <None Include="Areas\Admin\Views\ShipAddress\Edit.cshtml" />
+    <None Include="Areas\Admin\Views\ShipAddress\Index.cshtml" />
+    <None Include="Areas\Admin\Views\ShipMenthod\Create.cshtml" />
+    <None Include="Areas\Admin\Views\ShipMenthod\Edit.cshtml" />
+    <None Include="Areas\Admin\Views\ShipMenthod\Index.cshtml" />
+    <None Include="Areas\Admin\Views\VouchersAdmin\Create.cshtml" />
+    <None Include="Areas\Admin\Views\VouchersAdmin\Details.cshtml" />
+    <None Include="Areas\Admin\Views\VouchersAdmin\Edit.cshtml" />
+    <None Include="Areas\Admin\Views\VouchersAdmin\Index.cshtml" />
+    <None Include="Areas\Admin\Views\_ViewImports.cshtml" />
+    <None Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Home\Privacy.cshtml" />
+    <None Include="Views\Shared\Error.cshtml" />
+    <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="wwwroot\js\site.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Styles\img\computer\" />
   </ItemGroup>
 
 </Project>
