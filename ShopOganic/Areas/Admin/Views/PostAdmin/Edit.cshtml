@@ -1,5 +1,10 @@
 ﻿@model ShopOganicAPI.Models.Post
-
+<style>
+    label {
+        font-size: 20px;
+        color: forestgreen;
+    }
+</style>
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
@@ -8,13 +13,18 @@
     <link href="~/Adminassets/summernote/summernote-bs4.css" rel="stylesheet" />
     <link href="~/Adminassets/summernote/summernote.css" rel="stylesheet" />
 }
-@*<h1>Edit</h1>
+<h1>Post</h1>
 
-<h4>Post</h4>
-<hr />*@
-
-
-<form asp-controller="PostAdmin" asp-action="Edit" asp-route-id="@Model.PostID" method="post" enctype="multipart/form-data">
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+            <span class="breadcrumb-item" href="#">Quản lý hệ thống</span>
+            <a class="breadcrumb-item active" href="#">Quản lý bài viết</a>
+        </nav>
+    </div>
+</div>
+<form asp-controller="PostAdmin" asp-action="Edit"  method="post" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="PostID" />
     <input type="hidden" asp-for="ImageUrl" />
@@ -55,6 +65,10 @@
                         <input type="text" class="form-control" asp-for="Title">
                     </div>
                     <div class="form-group">
+                        <label asp-for="CategoryID" class="control-label"></label>
+                        @Html.DropDownList("CategoryID", (IEnumerable<SelectListItem>) ViewBag.lstCate,"Select Category", new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
                         <label class="font-weight-semibold" for="productColors">Alias</label>
                         <input type="text" class="form-control" asp-for="Alias">
                     </div>
@@ -66,6 +80,7 @@
                     <div class="form-group">
                         <label class="font-weight-semibold" for="productBrand">Ảnh đại diện</label>
                         <input name="fThumb" type="file" class="form-control-file" asp-for="ImageUrl" />
+                        
                         <span asp-validation-for="ImageUrl" class="text-danger"></span>
                     </div>
                     <div class="row">

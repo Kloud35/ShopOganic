@@ -1,62 +1,73 @@
 ﻿@model IEnumerable<ShopOganicAPI.Models.Category>
 
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+	ViewData["Title"] = "Index";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1>Index</h1>
+<div class="page-header">
+	<div class="header-sub-title">
+		<nav class="breadcrumb breadcrumb-dash">
+			<a asp-area="Admin" asp-controller="Home" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+			<span class="breadcrumb-item" href="#">Quản lý hệ thống</span>
+			<a class="breadcrumb-item active" href="#">Quản lý sản phẩm</a>
+		</nav>
+	</div>
+</div>
+<div class="row m-b-30">
+	<div class="col-lg text-right">
+		<a class="btn btn-primary" asp-area="Admin" asp-controller="Category" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i><span>Thêm mới</span></a>
+	</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+</div>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CategoryName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Published)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryName)
-            </td>
-            <td>
-                @*@Html.DisplayFor(modelItem => item.Status)*@
-                    @if (item.Status == 1)
-                    {
-                        <div class="d-flex align-items-center">
-                            <div class="badge badge-success badge-dot m-r-10"></div>
-                            <div>Đang hoạt động</div>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="d-flex align-items-center">
-                            <div class="badge badge-danger badge-dot m-r-10"></div>
-                            <div>Không hoạt động</div>
-                        </div>
-                    }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Published)
-            </td>
-            <td>
-                    <a asp-action="Edit" asp-route-id="@item.CategoryID" class="btn btn-info m-r-5">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.CategoryID" class="btn btn-warning m-r-5">Details</a>
-                    <a asp-action="Delete" asp-route-id="@item.CategoryID" class="btn btn-danger m-r-5" onclick="return confirm('Xác nhận xóa ?');" )>Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
+	<thead>
+		<tr style="background-color:aquamarine">
+			<th>
+				@Html.DisplayNameFor(model => model.CategoryName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Status)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Published)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.CategoryName)
+				</td>
+				<td>
+					@*@Html.DisplayFor(modelItem => item.Status)*@
+					@if (item.Status == 1)
+					{
+						<div class="d-flex align-items-center">
+							<div class="badge badge-success badge-dot m-r-10"></div>
+							<div>Đang hoạt động</div>
+						</div>
+					}
+					else
+					{
+						<div class="d-flex align-items-center">
+							<div class="badge badge-danger badge-dot m-r-10"></div>
+							<div>Không hoạt động</div>
+						</div>
+					}
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Published)
+				</td>
+				<td>
+					<a asp-action="Edit" asp-route-id="@item.CategoryID" class="btn btn-info m-r-5">Edit</a>
+					<a asp-action="Details" asp-route-id="@item.CategoryID" class="btn btn-warning m-r-5">Details</a>
+					<a asp-action="Delete" asp-route-id="@item.CategoryID" class="btn btn-danger m-r-5" onclick="return confirm('Xác nhận xóa ?');" )>Delete</a>
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>

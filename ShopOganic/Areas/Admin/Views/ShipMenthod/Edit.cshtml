@@ -1,13 +1,28 @@
 ﻿@model ShopOganicAPI.Models.ShipMenthod
-
+<style>
+    label {
+        font-size: 20px;
+        color: forestgreen;
+    }
+</style>
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1>Edit</h1>
+
 
 <h4>ShipMenthod</h4>
+
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+            <span class="breadcrumb-item" href="#">Quản lý hệ thống</span>
+            <a class="breadcrumb-item active" href="#">Quản lý ship</a>
+        </nav>
+    </div>
+</div>
 <hr />
 <div class="row">
     <div class="col-md-4">

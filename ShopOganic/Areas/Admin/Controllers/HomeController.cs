@@ -46,7 +46,8 @@ namespace ShopOganic.Areas.Admin.Controllers
                 var claims = new List<Claim>()
                         {
                             new Claim(ClaimTypes.Name, user.FullName),
-                            new Claim("Name", user.FullName)
+                            new Claim("Name", user.FullName),
+                            new Claim("AccountID", user.AccountID.ToString())
                         };
                 if (user.RoleID == Guid.Parse("f6ad3e16-8fe4-4cbc-b753-4a941e38d91a"))
                 {
@@ -64,7 +65,7 @@ namespace ShopOganic.Areas.Admin.Controllers
                 };
                 await HttpContext.SignInAsync("MyCookie", principal, auth);
 
-                return RedirectToRoute("areas", new { area = "Admin", controller = "Product", action = "Index" });
+                return RedirectToRoute("areas", new { area = "Admin", controller = "Bill", action = "Index" });
             }
             else
             {

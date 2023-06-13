@@ -61,33 +61,32 @@ namespace ShopOganic.Areas.Admin.Controllers
             try
             {
 
-                if (ModelState.IsValid)
+
+                if (fThumb != null)
                 {
-                    if (fThumb != null)
-                    {
-                        string extension = Path.GetExtension(fThumb.FileName);
-                        string imageName = Utilities.SEOUrl(post.Title) + extension;
-                        post.ImageUrl = await Utilities.UploadFile(fThumb, @"news", imageName.ToLower());
-                    }
-                    if (string.IsNullOrEmpty(post.ImageUrl)) post.ImageUrl = "default.jpg";
-                    post.Author = "Duy đẹp trai";
-                    post.CategoryID = Guid.Parse("8400aae0-5c3f-4a53-81ff-85991628cac1");
-                    post.AccountID = Guid.Parse("bc92c19d-bd40-4f4d-8829-a754bfa0a12b");
-                    post.Alias = Utilities.SEOUrl(post.Title);
-                    post.CreatedDate = DateTime.Now;
-
-                    var client = new HttpClient();
-                    var apiUrl = $"https://localhost:7186/api/Post/create-post?";
-
-                    var request = new HttpRequestMessage(HttpMethod.Post, apiUrl);// nhận giá trị truyền vào
-                    request.Content = new StringContent(JsonConvert.SerializeObject(post), Encoding.UTF8, "application/json");
-                    var response = await client.SendAsync(request);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        _notyfService.Success("Tạo mới thành công!");
-                        return RedirectToAction(nameof(Index));
-                    }
+                    string extension = Path.GetExtension(fThumb.FileName);
+                    string imageName = Utilities.SEOUrl(post.Title) + extension;
+                    post.ImageUrl = await Utilities.UploadFile(fThumb, @"news", imageName.ToLower());
                 }
+                if (string.IsNullOrEmpty(post.ImageUrl)) post.ImageUrl = "default.jpg";
+                post.Author = "Duy đẹp trai";
+                post.CategoryID = Guid.Parse("8400aae0-5c3f-4a53-81ff-85991628cac1");
+                post.AccountID = Guid.Parse("bc92c19d-bd40-4f4d-8829-a754bfa0a12b");
+                post.Alias = Utilities.SEOUrl(post.Title);
+                post.CreatedDate = DateTime.Now;
+
+                var client = new HttpClient();
+                var apiUrl = $"https://localhost:7186/api/Post/create-post?";
+
+                var request = new HttpRequestMessage(HttpMethod.Post, apiUrl);// nhận giá trị truyền vào
+                request.Content = new StringContent(JsonConvert.SerializeObject(post), Encoding.UTF8, "application/json");
+                var response = await client.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    _notyfService.Success("Tạo mới thành công!");
+                    return RedirectToAction(nameof(Index));
+                }
+
 
                 return View();
             }
@@ -147,7 +146,7 @@ namespace ShopOganic.Areas.Admin.Controllers
                     }
                 }
 
-              
+
                 return View();
             }
             catch

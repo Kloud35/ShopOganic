@@ -1,78 +1,90 @@
-﻿
-@model IEnumerable<ShopOganicAPI.Models.Account>
+﻿@model IEnumerable<ShopOganicAPI.Models.Account>
 
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+	ViewData["Title"] = "Index";
+	Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1>Index</h1>
+<div class="page-header">
+	<div class="header-sub-title">
+		<nav class="breadcrumb breadcrumb-dash">
+			<a asp-area="Admin" asp-controller="Home" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+			<span class="breadcrumb-item" href="#">Quản lý hệ thống</span>
+			<a class="breadcrumb-item active" href="#">Quản lý tài khoản</a>
+		</nav>
+	</div>
+</div>
+<div class="row m-b-30">
+	<div class="col-lg text-right">
+		<a class="btn btn-primary" asp-area="Admin" asp-controller="AccountAdmin" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i><span>Thêm mới</span></a>
+	</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-    
-</p>
-<table  class="table">
-    <thead>
-        <tr>
-            
-            <th>
-                @Html.DisplayNameFor(model => model.AccountName)
-            </th>
-            <th>
-                @Html.DisplayName("Picture")
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FullName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhoneNumber)
-            </th>
-           
-            <th>
-                @Html.DisplayName("Active")
-            </th>
-           
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-               
-            <td>
-                @Html.DisplayFor(modelItem => item.AccountName)
-            </td>
-                <td>
-                    <img src="/images/@item.ImageUrl" height="100px"></img>
-                </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
-            </td>
-           
-            <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
-            </td>
-            
-                <td>
-                    <a asp-action="Change" asp-route-id="@item.AccountID" class="btn btn-info m-r-5" onclick="return confirm('Xác nhận thay đổi này?');">Status</a>|
-                    <a asp-action="Edit" asp-route-id="@item.AccountID" class="btn btn-info m-r-5">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.AccountID" class="btn btn-warning m-r-5">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.AccountID" class="btn btn-danger m-r-5" onclick="return confirm('Xác nhận xóa Account này?');" )>Delete</a>
-                </td>
-        </tr>
-}
-    </tbody>
-</table>
+</div>
+<div class="table-responsive">
+	<div class="card-body">
+		<table class="table table-hover e-commerce-table">
+			<thead >
+				<tr style="background-color:aquamarine">
 
+					<th>
+						@Html.DisplayNameFor(model => model.AccountName)
+					</th>
+					<th>
+						@Html.DisplayName("Picture")
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Email)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.FullName)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.PhoneNumber)
+					</th>
+
+					<th>
+						@Html.DisplayName("Active")
+					</th>
+
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+
+						<td>
+							@Html.DisplayFor(modelItem => item.AccountName)
+						</td>
+						<td>
+							<img src="/images/@item.ImageUrl" height="100px"></img>
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Email)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.FullName)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.PhoneNumber)
+						</td>
+
+						<td>
+							@Html.DisplayFor(modelItem => item.IsActive)
+						</td>
+
+						<td>
+							<a asp-action="Change" asp-route-id="@item.AccountID" class="btn btn-info m-r-5" onclick="return confirm('Xác nhận thay đổi này?');">Status</a>|
+							<a asp-action="Edit" asp-route-id="@item.AccountID" class="btn btn-info m-r-5">Edit</a> |
+							<a asp-action="Details" asp-route-id="@item.AccountID" class="btn btn-warning m-r-5">Details</a> |
+							<a asp-action="Delete" asp-route-id="@item.AccountID" class="btn btn-danger m-r-5" onclick="return confirm('Xác nhận xóa Account này?');" )>Delete</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
 
 

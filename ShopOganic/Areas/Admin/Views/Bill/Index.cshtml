@@ -5,12 +5,20 @@
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
     var listStatus = (List<string>)ViewBag.Status;
 }
-
-<h1>Index</h1>
+<h4>Bill</h4>
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+            <span class="breadcrumb-item" href="#">Quản lý hệ thống</span>
+            <a class="breadcrumb-item active" href="#">Quản lý hóa đơn</a>
+        </nav>
+    </div>
+</div>
 
 <table class="table">
     <thead>
-        <tr>
+        <tr style="background-color:aquamarine">
             
             <th>@Html.DisplayNameFor(model => model.BillCode)</th>
             <th>@Html.DisplayNameFor(model => model.PaymentMenthod)</th>

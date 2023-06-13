@@ -1,12 +1,12 @@
 ﻿
-using ASM_CSharp4_Linhtnph20247.ViewModel;
+using ShopOganic.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using ShopOganic.Models;
 using System.Diagnostics;
 
-namespace ASM_CSharp4_Linhtnph20247.Controllers
+namespace ShopOganic.Controllers
 {
     public class CartController : Controller
     {
@@ -22,19 +22,25 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
             //_cartService = new CartService();   
             //_cartDetailService = new CartDetailService();
         }
-        public IActionResult Cart()
+        public void GetCustomer()
         {
-            ////var cart =_cartService.GetCartById(currentUserId); //Phân quyền: Lấy thông tin giỏ hàng của người dùng hiện tại
-            //var cartDetails = _cartDetailService.GetAllCartDetail()/*.Where(cd => cd.CartId == cart.Id)*/;
-            float totalAmount = 0;
-            //foreach (var cartDetail in cartDetails)
-            //{
-            //    totalAmount += cartDetail.Product.Price * cartDetail.Quantity;
-            //}
-            //var cartViewModel = new CartViewModel { CartDetails = cartDetails, TotalAmount = totalAmount};
-            ////TempData["CartItem"] = cartDetails.Count;
-            //var username = HttpContext.Session.GetString("UserLoginSession");
-            //TempData["UserLogin"] = username;
+            string cookieValue = Request.Cookies["MyCookie"];
+
+            if (!string.IsNullOrEmpty(cookieValue))
+            {
+                // Get the ClaimsPrincipal from the cookie
+                var principal = HttpContext.User;
+
+                if (principal != null && principal.Identity.IsAuthenticated && principal.IsInRole("Customer"))
+                {
+                    ViewBag.CustomerID = Guid.Parse(principal.FindFirst("CustomerID").Value);
+                    ViewBag.Name = principal.FindFirst("Name").Value;
+                }
+            }
+        }
+        public async Task<IActionResult> Cart()
+        {
+
             return View();
         }
         [HttpPost]
@@ -87,7 +93,7 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
             //        return RedirectToAction("Cart");
 
             //}
-            return RedirectToAction("ProductDetail", "Home", new {id = productId});
+            return RedirectToAction("ProductDetail", "Home", new { id = productId });
         }
 
         public IActionResult UpdateQuantity(CartViewModel model)
@@ -147,7 +153,7 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
             return View(/*"ShowDelete" ,cartViewModel*/);
         }
         [HttpPost]
-        public IActionResult RollBack(Guid id) 
+        public IActionResult RollBack(Guid id)
         {
             //var cartDetails = SessionService.GetObjFromSession(HttpContext.Session, "Delete");
             //var cartDetail = cartDetails.FirstOrDefault(p => p.Id == id);

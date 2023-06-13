@@ -11,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-area="Admin" asp-controller="Product" asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ProductName" class="control-label"></label>
@@ -39,17 +39,13 @@
                 <span asp-validation-for="CreatedDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                @*<label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>*@
-                <label class="control-label">ImageUrl</label>
-                <input type="file" asp-for="ImageUrl" accept="image/*" />
+                <label class="control-label"> Image</label>
+                <input asp-for="ImageUrl" name="imageFile" type="file" class="form-control" />
                 <span asp-validation-for="ImageUrl" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label class="control-label">Status</label>
-                @*<input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>*@
+                <br />
                 <input type="radio" asp-for="Status" value="1" checked /> Còn hàng<br />
                 <input type="radio" asp-for="Status" value="0" /> Hết hàng<br />
             </div>
@@ -65,7 +61,5 @@
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

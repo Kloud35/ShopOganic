@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShopOganicAPI.IServices;
 using ShopOganicAPI.Models;
+using ShopOganicAPI.Models.DTO;
 using ShopOganicAPI.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

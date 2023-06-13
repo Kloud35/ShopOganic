@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ShopOganicAPI.Helper;
 using ShopOganicAPI.IServices;
 using ShopOganicAPI.Models;
 using ShopOganicAPI.Services;
@@ -17,25 +18,22 @@ namespace ShopOganicAPI.Controllers
         [HttpPost("sign-up")]
         public async Task<IActionResult> SignUp([FromBody] Customer customer)
         {
-            string hashedPassword = _passwordHasher.HashPassword(customer, customer.Password);
-            customer.Password = hashedPassword;
+            customer.Password = MD5.EncryptPassword(customer.Password);
             var result = await customerServices.CreateAsync(customer);
-
             if (result)
             {
                 return Ok(result);
             }
             return BadRequest();
         }
-        [HttpGet("sign-in")]
+        [HttpPost("sign-in")]
         public async Task<IActionResult> SignIn([FromBody] Customer customer)
         {
-            var cus = await customerServices.FindByAttributeAsync(p => p.Email == customer.Email);
-            PasswordVerificationResult result = _passwordHasher.VerifyHashedPassword(customer, cus.Password,customer.Password);
+            var cus = await customerServices.FindByAttributeAsync(p => p.Email == customer.Email && p.Password.Equals(MD5.EncryptPassword(customer.Password)));
 
-            if (result == PasswordVerificationResult.Success)
+            if (cus != null)
             {
-                return Ok(result);
+                return Ok(cus);
             }
             return BadRequest();
         }
@@ -50,6 +48,6 @@ namespace ShopOganicAPI.Controllers
             }
             return BadRequest();
         }
-       
+
     }
 }

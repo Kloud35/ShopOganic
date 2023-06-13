@@ -1,4 +1,4 @@
-﻿@model ASM_CSharp4_Linhtnph20247.ViewModel.ProductViewModel
+﻿@model ShopOganicAPI.Models.Product
 
 @{
     ViewData["Title"] = "ProductDetail";
@@ -10,14 +10,15 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="product__details__pic">
                         <div class="product__details__pic__item">
-                        @*@if (System.IO.Path.GetExtension(@Model.Product.ImageUrl) == ".jpg" ||
-                             System.IO.Path.GetExtension(@Model.Product.ImageUrl) == ".png" ||
-                             System.IO.Path.GetExtension(@Model.Product.ImageUrl) == ".jpeg" ||
-                             System.IO.Path.GetExtension(@Model.Product.ImageUrl) == ".tiff" ||
-                             System.IO.Path.GetExtension(@Model.Product.ImageUrl) == ".gif")
+                        @if (System.IO.Path.GetExtension(@Model.ImageUrl) == ".jpg" ||
+                             System.IO.Path.GetExtension(@Model.ImageUrl) == ".png" ||
+                             System.IO.Path.GetExtension(@Model.ImageUrl) == ".jpeg" ||
+                             System.IO.Path.GetExtension(@Model.ImageUrl) == ".tiff" ||
+                             System.IO.Path.GetExtension(@Model.ImageUrl) == ".gif"||
+                            System.IO.Path.GetExtension(@Model.ImageUrl) == ".jfif")
                         {
                             <img class="product__details__pic__item--large"
-                                 src="~/Styles/img/product/@Model.Product.ImageUrl">
+                                 src="~/images/@Model.ImageUrl">
                         }
                         </div>
                         <div class="product__details__pic__slider owl-carousel">
@@ -35,7 +36,7 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="product__details__text">
                         <h3>
-                            @Model.Product.Name
+                            @Model.ProductName
                         </h3>
                         <div class="product__details__rating">
                             <i class="fa fa-star"></i>
@@ -46,12 +47,12 @@
                             <span>(18 reviews)</span>
                         </div>
                         <div class="product__details__price">
-                            @Model.Product.Price.ToString("C")
+                            @Model.Price.ToString("C")
                         </div>
                         <p>
-                            @Model.Product.Description
-                        </p>*@
-                      @*  @if (@Model.Product.Quantity == 0)
+                            @Model.Description
+                        </p>
+                        @if (@Model.Quantity == 0)
                         {
                             <a href="/Home/Shop" class="primary-btn">CHOOSE OTHER PRODUCTS</a>
                             <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
@@ -61,11 +62,11 @@
                         {
                             <form method="post" asp-controller="Cart" asp-action="AddToCart">
                                 @Html.AntiForgeryToken()
-                                <input type="hidden" name="productId" value="@Model.Product.Id"/>
+                                <input type="hidden" name="productId" value="@Model.ProductID"/>
                                 <div class="product__details__quantity">
                                     <div class="quantity">
                                         <div class="pro-qty">
-                                            <input type="text" name="quantity" value="@Model.QuantityAddToCart">
+                                            <input type="text" name="quantity" value="1">
                                         </div>
                                     </div>
                                 </div>
@@ -74,23 +75,8 @@
                             </form>
                         }
                         <ul>
-                            <li><b>Quantity in stock</b> <span>@Model.Product.Quantity</span></li>
-                            <li><b>Brand</b>
-                                <span>
-                                    @foreach (var brand in Model.Brands)
-                                    {
-                                        <button type="button" class="btn btn-light" value="@brand.Value">@brand.Text</button>
-                                    }
-                                </span>
-                            </li>       
-                            <li><b>Size</b>     
-                                <span>
-                                    @foreach (var size in Model.Sizes)
-                                    {
-                                        <button type="button" class="btn btn-light" value="@size.Value">@size.Text</button>
-                                    }
-                                </span>*@
-                            </li>
+                            <li><b>Quantity in stock</b> <span>@Model.Quantity</span></li>
+                            
                             <li><b>Share on</b>
                                 <div class="share">
                                     <a href="#"><i class="fa fa-facebook"></i></a>

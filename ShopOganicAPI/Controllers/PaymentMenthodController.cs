@@ -43,7 +43,7 @@ namespace ShopOganicAPI.Controllers
         }
 
         // PUT api/<PaymentMenthodController>/5
-        [HttpPost("update-paymentmenthod/{id}")]
+        [HttpPost("update-paymentmenthod")]
         public async Task<bool> UpdatePayMentMenthod(PaymentMenthod paymentMenthod)
         {
             return await _ipaymentmenthodservices.UpdateAsync(paymentMenthod);

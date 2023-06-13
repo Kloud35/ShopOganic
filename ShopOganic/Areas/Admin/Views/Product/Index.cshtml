@@ -3,10 +3,6 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
-    List<string> imageExtensions = new List<string>()
-    {
-        ".png", ".jpg", ".jpeg", ".gif", ".tiff", ".pdf"
-    };
 }
 
 <h1>Index</h1>
@@ -64,21 +60,9 @@
                     @Html.DisplayFor(modelItem => item.CreatedDate)
                 </td>
                 <td>
-                    @*@Html.DisplayFor(modelItem => item.ImageUrl)*@
-                    @{
-                        string extension = System.IO.Path.GetExtension(item.ImageUrl);
-                    }
-                    @if (imageExtensions.Contains(extension.Trim()))
-                    {
-                        <img src="~/image/@item.ImageUrl" width="200px">
-                    }
-                    else
-                    {
-                        <img src="~/image/7ed0855435194229a525aad6009a0497_9366.png" width="300px">
-                    }
+                    <img width="200" src="~/images/@item.ImageUrl" />
                 </td>
                 <td>
-                    @*@Html.DisplayFor(modelItem => item.Status)*@
                     @if (item.Status == 1)
                     {
                         <div class="d-flex align-items-center">

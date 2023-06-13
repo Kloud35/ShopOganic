@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var customerName = (string)ViewBag.Name;
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -55,23 +58,7 @@
                 <li><a href="#">English</a></li>
             </ul>
         </div>
-        @*@if (TempData["UserLogin"] != null)
-        {
-            <div class="header__top__right__auth header__top__right__language">
-                <div><img src="~/Styles/img/blog/details/details-admin.jpg" height="25px">  @TempData["UserLogin"]</div>
-                <span class="arrow_carrot-down"></span>
-                <ul>
-                    <li><a href="#">Information</a></li>
-                    <li><a href="/Home/Logout">Logout</a></li>
-                </ul>
-            </div>
-        }
-        else
-        {
-            <div class="header__top__right__auth">
-                <a href="/Home/Signin"><i class="fa fa-user"></i> Login</a>
-            </div>
-        }*@
+        
     </div>
     <nav class="humberger__menu__nav mobile-menu">
         <ul>
@@ -151,23 +138,23 @@
                                 <li><a href="#">English</a></li>
                             </ul>
                         </div>
-                        @*@if (TempData["UserLogin"] != null)
+                        @if (customerName != null)
                         {
                             <div class="header__top__right__auth header__top__right__language">
-                                <div><img src="~/Styles/img/blog/details/details-admin.jpg" height="25px">  @TempData["UserLogin"]</div>
+                                    <div><img src="~/Styles/img/blog/details/details-admin.jpg" height="25px"> @customerName </div>
                                 <span class="arrow_carrot-down"></span>
                                 <ul>
                                     <li><a href="#">Information</a></li>
-                                    <li><a href="/Home/Logout">Logout</a></li>
+                                    <li><a asp-action="Logout" asp-controller="Home">Logout</a></li>
                                 </ul>
                             </div>
                         }
                         else
                         {
                             <div class="header__top__right__auth">
-                                <a href="/Home/Signin"><i class="fa fa-user"></i> Login</a>
+                                <a asp-action="Login" asp-controller="Home"><i class="fa fa-user"></i> Login</a>
                             </div>
-                        }*@
+                        }
                     </div>
                 </div>
             </div>

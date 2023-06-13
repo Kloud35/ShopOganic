@@ -1,5 +1,5 @@
 ﻿
-using ASM_CSharp4_Linhtnph20247.ViewModel;
+using ShopOganic.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using static NuGet.Packaging.PackagingConstants;
 using ShopOganic.Models;
 
-namespace ASM_CSharp4_Linhtnph20247.Controllers
+namespace ShopOganic.Controllers
 {
     public class OrderController : Controller
     {

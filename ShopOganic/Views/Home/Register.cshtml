@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewData["Title"] = "Register";
+    Layout = null;
+}
+
+@model ShopOganic.ViewModel.LoginCustomerViewModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+    <title>Otika - Admin Dashboard Template</title>
+    <!-- General CSS Files -->
+    <link rel="stylesheet" href="~/logintemplate/css/app.min.css">
+    <link rel="stylesheet" href="~/logintemplate/bundles/jquery-selectric/selectric.css">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="~/logintemplate/css/style.css">
+    <link rel="stylesheet" href="~/logintemplate/css/components.css">
+    <!-- Custom style CSS -->
+    <link rel="stylesheet" href="~/logintemplate/css/custom.css">
+    <link rel='shortcut icon' type='image/x-icon' href='~/logintemplate/img/favicon.ico' />
+</head>
+
+<body>
+    <div id="app">
+        <section class="section">
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2">
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h4>Register</h4>
+                            </div>
+                            <div class="card-body">
+                                <form asp-controller="Home" asp-action="Register" method="post">
+                                    <div class="form-group">
+                                        <label asp-for="FullName">Họ tên</label>
+                                        <input id="fullname" type="text" class="form-control" name="fullname" asp-for="FullName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input id="email" type="email" class="form-control" name="email" asp-for="Email">
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-6">
+                                            <label for="password" class="d-block">Mật khẩu</label>
+                                            <input id="password" type="password" class="form-control" name="password" asp-for="Password">
+                                            <span asp-validation-for="Password" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label for="repassword" class="d-block">Nhập lại Mật khẩu</label>
+                                            <input id="repassword" type="password" class="form-control" name="repassword" asp-for="RePassword">
+                                            
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input type="submit" class="btn btn-primary" />
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="mb-4 text-muted text-center">
+                                Đã có tài khoản? <a asp-controller="Home" asp-action="Index">Đăng nhập</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- General JS Scripts -->
+    <script src="~/logintemplate/js/app.min.js"></script>
+    <!-- JS Libraies -->
+    <script src="~/logintemplate/bundles/jquery-pwstrength/jquery.pwstrength.min.js"></script>
+    <script src="~/logintemplate/bundles/jquery-selectric/jquery.selectric.min.js"></script>
+    <!-- Page Specific JS File -->
+    <script src="~/logintemplate/js/page/auth-register.js"></script>
+    <!-- Template JS File -->
+    <script src="~/logintemplate/js/scripts.js"></script>
+    <!-- Custom JS File -->
+    <script src="~/logintemplate/js/custom.js"></script>
+</body>
+
+
+<!-- auth-register.html  21 Nov 2019 04:05:02 GMT -->
+</html>

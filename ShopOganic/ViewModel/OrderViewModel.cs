@@ -1,6 +1,6 @@
 ﻿//using ASM_CSharp4_Linhtnph20247.Models;
 
-namespace ASM_CSharp4_Linhtnph20247.ViewModel
+namespace ShopOganic.ViewModel
 {
     public class OrderViewModel
     {

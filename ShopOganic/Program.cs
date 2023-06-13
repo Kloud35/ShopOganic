@@ -2,6 +2,7 @@
 using AspNetCoreHero.ToastNotification.Abstractions;
 using AspNetCoreHero.ToastNotification.Extensions;
 using AspNetCoreHero.ToastNotification.Notyf;
+using ShopOganicAPI.IServices;
 using ShopOganicAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -45,7 +46,10 @@ builder.Services.AddAuthorization(options =>
     });
 });
 builder.Services.AddSession();
-
+builder.Services.AddRazorPages().AddViewOptions(options =>
+{
+    options.HtmlHelperOptions.ClientValidationEnabled = true;
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

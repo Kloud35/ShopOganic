@@ -5,14 +5,25 @@
 	Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1>Index</h1>
+<h4>Role</h4>
+<div class="page-header">
+	<div class="header-sub-title">
+		<nav class="breadcrumb breadcrumb-dash">
+			<a asp-area="Admin" asp-controller="Home" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+			<span class="breadcrumb-item" href="#">Quản lý hệ thống</span>
+			<a class="breadcrumb-item active" href="#">Quản lý tài khoản</a>
+		</nav>
+	</div>
+</div>
+<div class="row m-b-30">
+	<div class="col-lg text-right">
+		<a class="btn btn-primary" asp-area="Admin" asp-controller="RolesAdmin" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i><span>Thêm mới</span></a>
+	</div>
 
-<p>
-	<a asp-action="Create">Create New</a>
-</p>
+</div>
 <table class="table">
 	<thead>
-		<tr>
+		<tr style="background-color:aquamarine">
 			<th>
 				@Html.DisplayNameFor(model => model.RoleCode)
 			</th>

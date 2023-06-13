@@ -1,36 +1,63 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-
-using ASM_CSharp4_Linhtnph20247.ViewModel;
+using ShopOganic.ViewModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.RegularExpressions;
 using ShopOganic.Models;
+using Newtonsoft.Json;
+using ShopOganic.ViewModel;
+using ShopOganicAPI.Models;
+using System.Text;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
 
-namespace ASM_CSharp4_Linhtnph20247.Controllers
+namespace ShopOganic.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            
-        }
 
-        public IActionResult Index()
+        }
+        public void GetCustomer()
         {
-            
+            string cookieValue = Request.Cookies["MyCookie"];
+
+            if (!string.IsNullOrEmpty(cookieValue))
+            {
+                // Get the ClaimsPrincipal from the cookie
+                var principal = HttpContext.User;
+
+                if (principal != null && principal.Identity.IsAuthenticated && principal.IsInRole("Customer"))
+                {
+                    ViewBag.CustomerID = Guid.Parse(principal.FindFirst("CustomerID").Value);
+                    ViewBag.Name = principal.FindFirst("Name").Value;
+                }
+            }
+        }
+        public async Task<IActionResult> Index()
+        {
+            GetCustomer();
+            var client = new HttpClient();
+            var aipUrl = "https://localhost:7186/api/Product/get-all-product";
+            var request = new HttpRequestMessage(HttpMethod.Get, aipUrl);
+            var response = await client.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                var list = JsonConvert.DeserializeObject<List<Product>>(responseBody).Where(p => p.Quantity > 0);
+                return View(list);
+            }
             return View();
         }
         public IActionResult Shop()
         {
             var viewModel = new ProductViewModel();
-            //viewModel.Products = _productService.GetAllProduct();
-            //TempData["CartItem"] = _cartDetailService.GetAllCartDetail().Count;
-            var username = HttpContext.Session.GetString("UserLoginSession");
-            TempData["UserLogin"] = username;
             return View("Shop", viewModel);
         }
         public IActionResult Search(string search)
@@ -44,30 +71,17 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
             return View(/*"Shop", viewModel*/);
         }
         [HttpGet]
-        public IActionResult ProductDetail(Guid id)
+        public async Task<IActionResult> ProductDetail(Guid id)
         {
-            //Product product = _productService.GetProductById(id);
-            //var viewModel = new ProductViewModel()
-            //{
-            //    Product = product,
-            //    //Sizes = _sizeService.GetAllSizes().Select(s => new SelectListItem
-            //    //{
-            //    //    Value = s.Id.ToString(),
-            //    //    Text = s.Name
-            //    //}).ToList(),
-            //    //SizeName = product.Size.Name,
-            //    //Brands = _brandService.GetAllBrand().Select(b => new SelectListItem
-            //    //{
-            //    //    Value = b.Id.ToString(),
-            //    //    Text = b.Name
-            //    //}).ToList(),
-            //    //BrandName = product.Brand.Name,
-            //    //QuantityAddToCart = 1
-            //};
-            //TempData["CartItem"] = _cartDetailService.GetAllCartDetail().Count;
-            var username = HttpContext.Session.GetString("UserLoginSession");
-            TempData["UserLogin"] = username;
-            //return View("ProductDetail", viewModel);
+            var client = new HttpClient();
+            var aipUrl = $"https://localhost:7186/api/Product/get-product{id}";
+            var request = new HttpRequestMessage(HttpMethod.Get, aipUrl);
+            var response = await client.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                var product = JsonConvert.DeserializeObject<Product>(await response.Content.ReadAsStringAsync());
+                return View(product);
+            }
             return View();
         }
 
@@ -93,101 +107,88 @@ namespace ASM_CSharp4_Linhtnph20247.Controllers
             TempData["UserLogin"] = username;
             return View("BlogDetail");
         }
-        public IActionResult Logout()
+        public IActionResult Login()
         {
-            //var username = "";
-            //HttpContext.Session.SetString("UserLoginSession", username);
-            //TempData["UserLogin"] = username;
-            return RedirectToAction("Index", "Home");
-        }
-        public IActionResult Signin()
-        {
-            //TempData["CartItem"] = _cartDetailService.GetAllCartDetail().Count;
-            var username = HttpContext.Session.GetString("UserLoginSession");
-            TempData["UserLogin"] = username;
-            return View("Signin");
+            return View();
         }
 
-        public IActionResult Login(string user, string pass)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginCustomerViewModel model)
         {
-            if (user.Length <= 6 || Regex.IsMatch(user, @"[!@#$%^&*()_+{}\[\]:;""',.<>/?\\|~-]"))
+            var client = new HttpClient();
+            var apiUrl = "https://localhost:7186/api/Customer/sign-in";
+            var customer = new Customer
             {
-                var thongbao = "UserName must be longer than 6 characters and contains no special characters";
-                TempData["User"] = thongbao;
-                return RedirectToAction("Signin", new { thongbao });
-            }
-            if (pass.Length <= 6 || Regex.IsMatch(pass, @"[!@#$%^&*()_+{}\[\]:;""',.<>/?\\|~-]"))
+                Email = model.Email,
+                Password = model.Password,
+            };
+            var jsonContent = new StringContent(JsonConvert.SerializeObject(customer), Encoding.UTF8, "application/json");
+            var response = await client.PostAsync(apiUrl, jsonContent);
+            if (response.IsSuccessStatusCode)
             {
-                var thongbao = "Password must be longer than 6 characters and contains no special characters";
-                TempData["Pass"] = thongbao;
-                return RedirectToAction("Signin", new { thongbao });
+                var check = JsonConvert.DeserializeObject<Customer>(await response.Content.ReadAsStringAsync());
+                var claims = new List<Claim>()
+                {
+                    new Claim(ClaimTypes.Name, check.FullName),
+                    new Claim("Name", check.FullName),
+                    new Claim("CustomerID", check.CustomerID.ToString()),
+                    new Claim("Email", check.Email),
+                    new Claim(ClaimTypes.Role, "Customer")
+                };
+                var identity = new ClaimsIdentity(claims, "MyCookie");
+                ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+                var auth = new AuthenticationProperties()
+                {
+                    IsPersistent = true
+                };
+                await HttpContext.SignInAsync("MyCookie", principal, auth);
+                return RedirectToAction(nameof(Index));
             }
 
-            //var users = _userService.GetAllUsers();
-            //foreach (var item in users)
-            //{
-            //    //if (user == item.UserName && pass == item.Password)
-            //    //{
-            //    //    var username = item.FullName;
-            //    //    HttpContext.Session.SetString("UserLoginSession", username);
-            //    //    TempData["UserLogin"] = username;
-            //    //    return RedirectToAction("Index", "Home", new { username });
-            //    //}
-            //}
-            var tb = "Username or password incorrect";
-            TempData["UserPass"] = tb;
-            return RedirectToAction("Signin", new { tb });
+            return View();
         }
-        //public IActionResult Login(string user, string pass)
-        //{
-        //    if (user.Length <= pass.Length)
-        //    {
-        //        var thongbao = "Tài khoản phải dài hơn hơn mật khẩu";
-        //        TempData["User"] = thongbao;
-        //        return RedirectToAction("Signin", new { thongbao });
-        //    }
-        //    if (Regex.IsMatch(user, @"[0-9]"))
-        //    {
-        //        var thongbao = "Tài khoản không được nhập số";
-        //        TempData["User"] = thongbao;
-        //        return RedirectToAction("Signin", new { thongbao });
-        //    }
-
-        //    var users = _userService.GetAllUsers();
-        //    foreach (var item in users)
-        //    {
-        //        if (user == item.UserName && pass == item.Password)
-        //        {
-        //            var username = item.FullName;
-        //            HttpContext.Session.SetString("UserLoginSession", username);
-        //            TempData["UserLogin"] = username;
-        //            return RedirectToAction("Order", "Order", new { username });
-        //        }
-        //    }
-        //    var tb = "Username or password incorrect";
-        //    TempData["UserPass"] = tb;
-        //    return RedirectToAction("Signin", new { tb });
-        //}
-        public IActionResult CheckOut()
+        public IActionResult Register()
         {
-            //var cart = _context.Carts.FirstOrDefault(c => c.UserId == currentUserId); //Phân quyền: Lấy thông tin giỏ hàng của người dùng hiện tại
-            //var cartDetails = _cartDetailService.GetAllCartDetail()/*.Where(cd => cd.CartId == cart.Id)*/;
-            float totalAmount = 0;
-            //foreach (var cartDetail in cartDetails)
-            //{
-            //    totalAmount += cartDetail.Product.Price * cartDetail.Quantity;
-            //}
-            //var cartViewModel = new CartViewModel { CartDetails = cartDetails, TotalAmount = totalAmount };
-            //TempData["CartItem"] = _cartDetailService.GetAllCartDetail().Count;
-            var username = HttpContext.Session.GetString("UserLoginSession");
-            TempData["UserLogin"] = username;
-            return View(/*"CheckOut", cartViewModel*/);
+            return View();
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(LoginCustomerViewModel model)
+        {
+            var customer = new Customer
+            {
+                FullName = model.FullName,
+                Email = model.Email,
+                Password = model.Password,
+                CreatedDate = DateTime.Now
+            };
+            var httpClient = new HttpClient();
+            var apiUrl = "https://localhost:7186/api/Customer/sign-up";
+
+            var jsonContent = new StringContent(JsonConvert.SerializeObject(customer), Encoding.UTF8, "application/json");
+            // Send request và sử lý response
+            var response = await httpClient.PostAsync(apiUrl, jsonContent);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return View();
+            }
+
+            return RedirectToAction(nameof(Login));
+        }
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync("MyCookie");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-using ASM_CSharp4_Linhtnph20247.ViewModel;
+using ShopOganic.ViewModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ShopOganic.Models;
 
-namespace ASM_CSharp4_Linhtnph20247.Controllers
+namespace ShopOganic.Controllers
 {
     public class ProductController : Controller
     {

@@ -4,19 +4,41 @@
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
+<h4>ShipMenthod</h4>
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+            <span class="breadcrumb-item" href="#">Quản lý hệ thống</span>
+            <a class="breadcrumb-item active" href="#">Quản lý ship</a>
+        </nav>
+    </div>
+</div>
+<div class="row m-b-30">
+    <div class="col-lg text-right">
+        <a class="btn btn-primary" asp-area="Admin" asp-controller="ShipMenthod" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i><span>Thêm mới</span></a>
+    </div>
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+</div>
 <table class="table">
+    <thead>
+        <tr style="background-color:aquamarine">
+                    <th>
+                @Html.DisplayNameFor(model => model.ShippingMenthodName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShipMenthodID)
-            </td>
+           
             <td>
                 @Html.DisplayFor(modelItem => item.ShippingMenthodName)
             </td>
@@ -26,11 +48,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.ShipMenthodID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.ShipMenthodID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.ShipMenthodID })
-            </td>
+            
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ShipMenthodID" class="btn btn-info m-r-5">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.ShipMenthodID" class="btn btn-danger m-r-5" onclick="return confirm('Xác nhận xóa ?');" )>Delete</a>
+                </td>
         </tr>
 }
     </tbody>
