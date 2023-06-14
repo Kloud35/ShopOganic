@@ -5,8 +5,83 @@
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1>Edit</h1>
-
+<form asp-controller="Product" asp-action="Edit" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="ProductID" />
+    <input type="hidden" asp-for="ImageUrl" />
+    <input type="hidden" asp-for="CreatedDate" />
+    <div class="page-header no-gutters has-tab">
+        <div class="d-md-flex m-b-15 align-items-center justify-content-between">
+            <div class="media align-items-center m-b-15">
+                <div class="avatar avatar-image rounded" style="height:70px; width:70px">
+                    <img width="120" height="120" src="~/images/news/@Model.ImageUrl" />
+                </div>
+                <div class="m-l-15">
+                    <h4 class="m-b-0">@Model.ProductName</h4>
+                    <p class="text-muted m-b-0">ID: #@Model.ProductID</p>
+                </div>
+            </div>
+            <div class="m-b-15">
+                <button class="btn btn-primary">
+                    <i class="anticon anticon-save"></i>
+                    <span>Lưu thay đổi</span>
+                </button>
+            </div>
+        </div>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#product-edit-basic">THÔNG TIN SẢN PHẨM</a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-content m-t-15">
+        <div class="tab-pane fade show active" id="product-edit-basic">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productName">ProductName</label>
+                        <input type="text" class="form-control" asp-for="ProductName">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold">Thể loại sản phẩm</label>
+                        @Html.DropDownList("CategoryID", (IEnumerable<SelectListItem>) ViewBag.lstCate as SelectList,"Select Category", new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productColors">Giá</label>
+                        <input type="text" class="form-control" asp-for="Price">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productFit">Số lượng tồn</label>
+                        <input type="text" class="form-control" asp-for="Quantity">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productBrand">Ảnh đại diện</label>
+                        <input name="fThumb" type="file" class="form-control-file" asp-for="ImageUrl" />
+                        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productFit">Mô tả</label>
+                        <input type="text" class="form-control" asp-for="Description">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Status</label>
+                        <br />
+                        <input type="radio" asp-for="Status" value="1" checked /> Còn hàng<br />
+                        <input type="radio" asp-for="Status" value="0" /> Hết hàng<br />
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</form>
+@*
 <h4>Product</h4>
 <hr />
 <div class="row">
@@ -63,7 +138,7 @@
 
 <div>
     <a asp-action="Index">Back to List</a>
-</div>
+</div>*@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

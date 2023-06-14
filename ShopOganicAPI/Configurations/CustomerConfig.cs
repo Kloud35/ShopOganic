@@ -19,7 +19,7 @@ namespace ShopOganicAPI.Configurations
             builder.Property(p => p.LastLogin).HasColumnType("datetime");
             builder.Property(p => p.Address).HasColumnType("nvarchar(max)").IsRequired(false); ;
             builder.Property(p => p.Status).HasColumnType("int");
-
+            
         }
     }
 }

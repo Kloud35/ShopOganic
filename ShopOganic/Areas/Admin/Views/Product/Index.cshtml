@@ -5,85 +5,82 @@
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1>Index</h1>
-
-<div class="row m-b-30">
-    <div class="col-lg text-right">
-        <a class="btn btn-primary" asp-area="Admin" asp-controller="Product" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i><span>Thêm mới</span></a>
+<div class="page-header">
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Trang chủ</a>
+            <span class="breadcrumb-item" href="#">Quản lý hệ thống</span>
+            <a class="breadcrumb-item active" href="#">Quản lý bài sản phẩm</a>
+        </nav>
     </div>
-
 </div>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Quantity)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedDate)
-                </td>
-                <td>
-                    <img width="200" src="~/images/@item.ImageUrl" />
-                </td>
-                <td>
-                    @if (item.Status == 1)
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30 text-right">
+            <div class="col-lg">
+                <a class="btn btn-primary" asp-area="Admin" asp-controller="Product" asp-action="Create"><i class="anticon anticon-plus-circle m-r-5"></i><span>Thêm mới</span></a>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover e-commerce-table text-center" >
+                <thead>
+                    <tr style="background-color:aquamarine">
+                        <th>Tên</th>
+                        <th>Ảnh</th>
+                        <th>Giá</th>
+                        <th>Số lượng còn</th>
+                        <th>Trạng thái</th>
+                        <th>#</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
                     {
-                        <div class="d-flex align-items-center">
-                            <div class="badge badge-success badge-dot m-r-10"></div>
-                            <div>Còn hàng</div>
-                        </div>
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.ProductName</td>
+                                <td>
+                                    <img width="90" height="90" src="~/images/news/@item.ImageUrl" />
+                                </td>
+                                <td>@item.Price</td>
+                                <td>@item.Quantity</td>
+@*                                <td>@item.CreatedDate</td>
+*@                                <td>
+                                    @if (item.Status == 1)
+                                    {
+                                        <div class="d-flex align-items-center">
+                                            <div class="badge badge-success badge-dot m-r-10"></div>
+                                            <div>Còn hàng</div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="d-flex align-items-center">
+                                            <div class="badge badge-danger badge-dot m-r-10"></div>
+                                            <div>Hết hàng</div>
+                                        </div>
+                                    }
+                                </td>
+                              
+                                <td>
+                                    <a class="btn btn-primary btn-tone m-r-5" asp-area="Admin" asp-controller="Product" asp-action="Details" asp-route-id="@item.ProductID">Chi tiết</a>
+                                    <a class="btn btn-secondary btn-tone m-r-5" asp-area="Admin" asp-controller="Product" asp-action="Edit" asp-route-id="@item.ProductID">Sửa</a>
+                                    <a asp-action="Delete" asp-route-id="@item.ProductID" class="btn btn-danger m-r-5" onclick="return confirm('Xác nhận xóa tin tức này?');" )>Delete</a>
+                                </td>
+                            </tr>
+                        }
                     }
-                    else
-                    {
-                        <div class="d-flex align-items-center">
-                            <div class="badge badge-danger badge-dot m-r-10"></div>
-                            <div>Hết hàng</div>
-                        </div>
-                    }
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.ProductID" class="btn btn-info m-r-5">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.ProductID" class="btn btn-warning m-r-5">Details</a>
-                    <a asp-action="Delete" asp-route-id="@item.ProductID" class="btn btn-danger m-r-5" onclick="return confirm('Xác nhận xóa sản phẩm này?');" )>Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+                </tbody>
+            </table>
+            <div aria-label="Page navigation example">
+                <ul class="pagination">
+                    <pager class="pager-container" list="@Model" asp-area="Admin" asp-controller="PostAdmin" asp-action="Index" />
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -14,5 +14,6 @@
         public string? Address { get; set; } = null!;
         public int? Status { get; set; }
         public virtual IQueryable<Bill>? Bills { get; set; } = null!;
+        public virtual Cart? Cart { get; set; }
     }
 }

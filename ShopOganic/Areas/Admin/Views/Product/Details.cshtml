@@ -5,77 +5,61 @@
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1>Details</h1>
+<form asp-controller="Product" asp-action="Edit" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="ProductID" />
+    <input type="hidden" asp-for="ImageUrl" />
+    <input type="hidden" asp-for="CreatedDate" />
+    <div class="page-header no-gutters has-tab">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#product-edit-basic">THÔNG TIN SẢN PHẨM</a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-content m-t-15">
+        <div class="tab-pane fade show active" id="product-edit-basic">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productName">ProductName</label>
+                        <input type="text" class="form-control" asp-for="ProductName">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold">Thể loại sản phẩm</label>
+                        @Html.DropDownList("CategoryID", (IEnumerable<SelectListItem>) ViewBag.lstCate as SelectList,"Select Category", new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productColors">Giá</label>
+                        <input type="text" class="form-control" asp-for="Price">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productFit">Số lượng tồn</label>
+                        <input type="text" class="form-control" asp-for="Quantity">
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productBrand">Ảnh đại diện</label>
+                        <div class="avatar avatar-image rounded" style="height:90px; width:100px">
+                            <img width="120" height="120" src="~/images/news/@Model.ImageUrl" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-semibold" for="productFit">Mô tả</label>
+                        <input type="text" class="form-control" asp-for="Description">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Status</label>
+                        <br />
+                        <input type="radio" asp-for="Status" value="1" checked /> Còn hàng<br />
+                        <input type="radio" asp-for="Status" value="0" /> Hết hàng<br />
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<div>
-    <h4>Product</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductID)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProductID)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProductName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Quantity)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Quantity)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageUrl)
-        </dt>
-        <dd>
-            <img width="200" src="~/images/@Model.ImageUrl" />
-        </dd>
-        <br />
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @if (Model.Status == 1)
-            {
-                <div class="d-flex align-items-center">
-                    <div class="badge badge-success badge-dot m-r-10"></div>
-                    <div>Còn hàng</div>
-                </div>
-            }
-            else
-            {
-                <div class="d-flex align-items-center">
-                    <div class="badge badge-danger badge-dot m-r-10"></div>
-                    <div>Hết hàng</div>
-                </div>
-            }
-        </dd>
-    </dl>
-</div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ProductID }) |
-    <a asp-action="Index">Back to List</a>
-</div>
+    </div>
+
+    <div class="form-group">
+        <a class="btn btn-primary" asp-action="Index">Back to List</a>
+    </div>
+</form>

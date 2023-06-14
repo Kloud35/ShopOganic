@@ -11,6 +11,7 @@ namespace ShopOganicAPI.Configurations
             builder.HasKey(p => p.CustomerID);
             builder.Property(p => p.CreatedDate).HasColumnType("datetime");
             builder.Property(p => p.Description).HasColumnType("nvarchar(max)");
+            builder.HasOne(p => p.Customer).WithOne(p => p.Cart);
         }
     }
 }

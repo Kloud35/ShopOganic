@@ -2,7 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+using ShopOganic.Helpper;
+using ShopOganicAPI.Context;
 using ShopOganicAPI.Models;
 using System.Data;
 using System.Security.Principal;
@@ -16,10 +20,13 @@ namespace ShopOganic.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         public INotyfService _notyfService { get; }
+        private OganicDBContext _context;
+
         // GET: ProductController
         public ProductController(INotyfService notyfService)
         {
             _notyfService = notyfService;
+            _context = new OganicDBContext();
         }
         public async Task<ActionResult> Index()
         {
@@ -35,7 +42,14 @@ namespace ShopOganic.Areas.Admin.Controllers
             }
             return View();
         }
+        private void SetViewBagCate(Guid? selectedID = null)
+        {
+            var x = _context.Categories;
 
+            var lstCate = new List<Category>();
+            ViewBag.lstCate = new SelectList(x, "CategoryID", "CategoryName", selectedID);
+
+        }
         // GET: ProductController/Details/5
         public async Task<ActionResult> Details(Guid id)
         {
@@ -46,15 +60,17 @@ namespace ShopOganic.Areas.Admin.Controllers
             if (response.IsSuccessStatusCode)
             {
                 var product = JsonConvert.DeserializeObject<Product>(await response.Content.ReadAsStringAsync());
+                SetViewBagCate();
                 return View(product);
 
             }
             return RedirectToAction(nameof(Index));
         }
-
+     
         // GET: ProductController/Create
         public ActionResult Create()
         {
+            SetViewBagCate();
             return View();
         }
 
@@ -62,15 +78,29 @@ namespace ShopOganic.Areas.Admin.Controllers
         // POST: ProductController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(Product product, IFormFile imageFile)
-        {
+        public async Task<ActionResult> Create(Product product, Microsoft.AspNetCore.Http.IFormFile fThumb)
+		{
             try
             {
-                if (imageFile != null && imageFile.Length > 0)
+               
+                if (product.CreatedDate == null)
                 {
-                    product.ImageUrl = await getPic(imageFile);
+                    product.CreatedDate = DateTime.Now;
                 }
-                if (string.IsNullOrEmpty(product.ImageUrl)) product.ImageUrl = "loi_ap.jpg";
+                if (product.Price == null || product.Quantity == null )
+                {
+                    product.Price = 100000;
+                    product.Quantity = 100;
+                }
+
+				if (fThumb != null)
+				{
+					string extension = Path.GetExtension(fThumb.FileName);
+					string imageName = Utilities.SEOUrl(product.ProductName) + extension;
+					product.ImageUrl = await Utilities.UploadFile(fThumb, @"news", imageName.ToLower());
+				}
+				if (string.IsNullOrEmpty(product.ImageUrl)) product.ImageUrl = "default.jpg";
+                product.Status = 1;
                 var client = new HttpClient();
                 var aipUrl = "https://localhost:7186/api/Product/add-product";
                 var request = new HttpRequestMessage(HttpMethod.Post, aipUrl);
@@ -81,6 +111,7 @@ namespace ShopOganic.Areas.Admin.Controllers
                     _notyfService.Success("Tạo mới thành công!");
                     return RedirectToAction(nameof(Index));
                 }
+                SetViewBagCate();
                 return View();
             }
             catch
@@ -89,7 +120,7 @@ namespace ShopOganic.Areas.Admin.Controllers
                 return View();
             }
         }
-        public async Task<string> getPic(IFormFile imageFile)
+       /* public async Task<string> getPic(IFormFile imageFile)
         {
             if (imageFile != null && imageFile.Length > 0)
             {
@@ -103,7 +134,7 @@ namespace ShopOganic.Areas.Admin.Controllers
             }
 
             return imageFile.FileName;
-        }
+        }*/
 
         // GET: ProductController/Edit/5
         public async Task<ActionResult> Edit(Guid id)
@@ -115,7 +146,8 @@ namespace ShopOganic.Areas.Admin.Controllers
             if (response.IsSuccessStatusCode)
             {
                 var product = JsonConvert.DeserializeObject<Product>(await response.Content.ReadAsStringAsync());
-                return View(product);
+				SetViewBagCate();
+				return View(product);
 
             }
             return RedirectToAction(nameof(Index));
@@ -124,16 +156,18 @@ namespace ShopOganic.Areas.Admin.Controllers
         // POST: ProductController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(Product product, IFormFile imageFile)
-        {
+        public async Task<ActionResult> Edit(Product product, Microsoft.AspNetCore.Http.IFormFile fThumb)
+		{
             try
             {
-                if (imageFile != null && imageFile.Length > 0)
-                {
-                    product.ImageUrl = await getPic(imageFile);
-                }
-                if (string.IsNullOrEmpty(product.ImageUrl)) product.ImageUrl = "loi_ap.jpg";
-                var client = new HttpClient();
+				if (fThumb != null)
+				{
+					string extension = Path.GetExtension(fThumb.FileName);
+					string imageName = Utilities.SEOUrl(product.ProductName) + extension;
+					product.ImageUrl = await Utilities.UploadFile(fThumb, @"news", imageName.ToLower());
+				}
+				if (string.IsNullOrEmpty(product.ImageUrl)) product.ImageUrl = "default.jpg";
+				var client = new HttpClient();
                 var jsonContent = new StringContent(JsonConvert.SerializeObject(product), Encoding.UTF8, "application/json");
                 var aipUrl = "https://localhost:7186/api/Product/update-product";
                 var request = new HttpRequestMessage(HttpMethod.Post, aipUrl);
@@ -143,6 +177,7 @@ namespace ShopOganic.Areas.Admin.Controllers
                     _notyfService.Success("Sửa thành công");
                     return RedirectToAction(nameof(Index));
                 }
+				SetViewBagCate();
                 return View();
             }
             catch

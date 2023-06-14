@@ -6,7 +6,8 @@ namespace ShopOganicAPI.Context
 {
     public class OganicDBContext : DbContext
     {
-        private string connectionString = @"Data Source=DESKTOP-ABEN704\SQLEXPRESS;Initial Catalog=ShopOganic;User ID=sa;Password=1;Connect Timeout=30;Encrypt=False;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False";
+        private readonly string connectionString = @"Data Source=DESKTOP-ABEN704\SQLEXPRESS;Initial Catalog=ShopOganic;User ID=sa;Password=1;Connect Timeout=30;Encrypt=False;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False";
+        
         protected OganicDBContext(DbContextOptions options) : base(options)
         {
         }

@@ -70,8 +70,8 @@
                                     @item.Author
                                 </td>
                                 <td>
-                                    <a class="btn btn-primary btn-tone m-r-5" asp-area="Admin" asp-controller="PostAdmin" asp-action="Details" asp-route-id="@item.PostID">Chi tiết</a>
-                                    <a class="btn btn-secondary btn-tone m-r-5" asp-area="Admin" asp-controller="PostAdmin" asp-action="Edit" asp-route-id="@item.PostID">Sửa</a>
+@*                                    <a class="btn btn-primary btn-tone m-r-5" asp-area="Admin" asp-controller="PostAdmin" asp-action="Details" asp-route-id="@item.PostID">Chi tiết</a>
+*@                                    <a class="btn btn-secondary btn-tone m-r-5" asp-area="Admin" asp-controller="PostAdmin" asp-action="Edit" asp-route-id="@item.PostID">Sửa</a>
                                     <a asp-action="Delete" asp-route-id="@item.PostID" class="btn btn-danger m-r-5" onclick="return confirm('Xác nhận xóa tin tức này?');" )>Delete</a>
                                 </td>
                             </tr>
