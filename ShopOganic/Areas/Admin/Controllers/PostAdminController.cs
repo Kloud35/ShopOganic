@@ -1,10 +1,13 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.RulesetToEditorconfig;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using ShopOganic.Helpper;
+using ShopOganicAPI.Context;
 using ShopOganicAPI.Models;
 using System.Data;
 using System.Text;
@@ -16,11 +19,15 @@ namespace ShopOganic.Areas.Admin.Controllers
     public class PostAdminController : Controller
     {
         public INotyfService _notyfService { get; }
+        private OganicDBContext _context;
+
         /*        private readonly ShopOganicAPI.Context.OganicDBContext _context;
         */
         public PostAdminController(INotyfService notyfService)
         {
             _notyfService = notyfService;
+            _context = new OganicDBContext();
+
         }
         // GET: PostAdminController
         public async Task<ActionResult> Index()
@@ -47,9 +54,19 @@ namespace ShopOganic.Areas.Admin.Controllers
         }
 
         // GET: PostAdminController/Create
-        public IActionResult Create()
+        
+        private void SetViewBagCate(Guid? selectedID = null)
+        {
+            var x = _context.Categories;
+
+            var lstCate = new List<Category>();
+            ViewBag.lstCate = new SelectList(x, "CategoryID", "CategoryName", selectedID);
+
+        }
+        public ActionResult Create()
         {
 
+            SetViewBagCate();
             return View();
         }
 
@@ -70,8 +87,11 @@ namespace ShopOganic.Areas.Admin.Controllers
                 }
                 if (string.IsNullOrEmpty(post.ImageUrl)) post.ImageUrl = "default.jpg";
                 post.Author = "Duy đẹp trai";
-                post.CategoryID = Guid.Parse("8400aae0-5c3f-4a53-81ff-85991628cac1");
-                post.AccountID = Guid.Parse("bc92c19d-bd40-4f4d-8829-a754bfa0a12b");
+                if (post.CategoryID == null)
+                {
+                    post.CategoryID = Guid.Parse("eded3fa4-aa8a-40d2-9d83-08db6ce24453");
+                }
+                post.AccountID = Guid.Parse("d1014636-fb58-4f99-9035-eace420e25b2");
                 post.Alias = Utilities.SEOUrl(post.Title);
                 post.CreatedDate = DateTime.Now;
 
@@ -86,13 +106,12 @@ namespace ShopOganic.Areas.Admin.Controllers
                     _notyfService.Success("Tạo mới thành công!");
                     return RedirectToAction(nameof(Index));
                 }
-
-
+                SetViewBagCate();
                 return View();
             }
             catch
             {
-                return View();
+                return BadRequest();
             }
         }
 
@@ -107,6 +126,7 @@ namespace ShopOganic.Areas.Admin.Controllers
             if (response.IsSuccessStatusCode)
             {
                 var post = JsonConvert.DeserializeObject<Post>(await response.Content.ReadAsStringAsync());
+                SetViewBagCate();
                 return View(post);
             }
 
@@ -130,11 +150,13 @@ namespace ShopOganic.Areas.Admin.Controllers
                     }
                     if (string.IsNullOrEmpty(post.ImageUrl)) post.ImageUrl = "default.jpg";
                     post.Author = "Duy đẹp trai";
-                    post.CategoryID = Guid.Parse("8400aae0-5c3f-4a53-81ff-85991628cac1");
-                    post.AccountID = Guid.Parse("bc92c19d-bd40-4f4d-8829-a754bfa0a12b");
+                    if (post.CategoryID == null)
+                    {
+                        post.CategoryID = Guid.Parse("eded3fa4-aa8a-40d2-9d83-08db6ce24453");
+                    }
+                    post.AccountID = Guid.Parse("d1014636-fb58-4f99-9035-eace420e25b2");
                     post.Alias = Utilities.SEOUrl(post.Title);
                     post.CreatedDate = DateTime.Now;
-
                     var client = new HttpClient();
                     var jsonContent = new StringContent(JsonConvert.SerializeObject(post), Encoding.UTF8, "application/json");
                     var apiUrl = $"https://localhost:7186/api/Post/update-post";
@@ -145,8 +167,7 @@ namespace ShopOganic.Areas.Admin.Controllers
                         return RedirectToAction(nameof(Index));
                     }
                 }
-
-
+                SetViewBagCate();
                 return View();
             }
             catch

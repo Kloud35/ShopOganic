@@ -35,7 +35,6 @@
         @foreach (var item in Model)
         {
             <tr>
-              
                 <td>@Html.DisplayFor(modelItem => item.BillCode)</td>
                 <td>@Html.DisplayFor(modelItem => item.PaymentMenthod)</td>
                 <td>@Html.DisplayFor(modelItem => item.TotalMoney)</td>
@@ -49,10 +48,6 @@
                         {
                             <option value="@listStatus.IndexOf(status)" selected="@(item.Status == listStatus.IndexOf(status) ? "selected" : null)">@status</option>
                         }
-                    </select>
-
-
-
 
                 </td>
                 <td>
@@ -63,5 +58,4 @@
     </tbody>
 </table>
 
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/js/change_bill_status.js" asp-append-version="true"></script>

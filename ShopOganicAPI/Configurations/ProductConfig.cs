@@ -16,6 +16,7 @@ namespace ShopOganicAPI.Configurations
             builder.Property(p => p.CreatedDate).HasColumnType("datetime");
             builder.Property(p => p.ImageUrl).HasColumnType("nvarchar(150)");
             builder.Property(p => p.Status).HasColumnType("int");
+            builder.HasOne(p=>p.Category).WithMany(p => p.Products).HasForeignKey(p => p.CategoryID);
         }
     }
 }

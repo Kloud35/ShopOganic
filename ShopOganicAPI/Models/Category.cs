@@ -10,6 +10,6 @@ namespace ShopOganicAPI.Models
         public int? Status { get; set; }
         public int? Published { get; set; }
         public virtual IQueryable<Post>? Posts { get; set; }
-        public virtual IQueryable<CategoryDetail>? CategoryDetails { get; set; }
+        public virtual IQueryable<Product>? Products { get; set; }
     }
 }

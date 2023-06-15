@@ -5,22 +5,22 @@ using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using ShopOganic.Models;
 using System.Diagnostics;
+using Newtonsoft.Json;
+using ShopOganicAPI.Models.DTO;
+using System.Text;
+using ShopOganicAPI.Models;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace ShopOganic.Controllers
 {
     public class CartController : Controller
     {
         private readonly ILogger<CartController> _logger;
-        //private readonly IProductService _productService;
-        //private readonly ICartService _cartService; 
-        //private readonly ICartDetailService _cartDetailService;
-
-        public CartController(ILogger<CartController> logger)
+        public INotyfService _notyfService { get; }
+        public CartController(ILogger<CartController> logger,INotyfService notyfService)
         {
             _logger = logger;
-            //_productService = new ProductService();
-            //_cartService = new CartService();   
-            //_cartDetailService = new CartDetailService();
+            _notyfService = notyfService;
         }
         public void GetCustomer()
         {
@@ -38,62 +38,64 @@ namespace ShopOganic.Controllers
                 }
             }
         }
+        [HttpGet]
         public async Task<IActionResult> Cart()
         {
-
-            return View();
+            GetCustomer();
+            if (ViewBag.CustomerID == null)
+                return RedirectToAction("Login", "Home");
+            var user = ViewBag.CustomerID;
+            var client = new HttpClient();
+            var aipUrl = $"https://localhost:7186/api/Cart/get-all-cart-{user}";
+            var request = new HttpRequestMessage(HttpMethod.Get, aipUrl);
+            var response = await client.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                var cartDetails = JsonConvert.DeserializeObject<List<CartDetail>>(responseBody);
+                decimal totalAmount = 0;
+                var products = new List<Product>();
+                foreach (var cartDetail in cartDetails)
+                {
+                    var aipUrlproduct = $"https://localhost:7186/api/Product/get-product{cartDetail.ProductID}";
+                    var requestproduct = new HttpRequestMessage(HttpMethod.Get, aipUrlproduct);
+                    var responseproduct = await client.SendAsync(requestproduct);
+                    var product = JsonConvert.DeserializeObject<Product>(await responseproduct.Content.ReadAsStringAsync());
+                    products.Add(product);
+                    totalAmount += (product.Price * cartDetail.Quantity);
+                }
+                var model = new CartViewModel { CartDetails = cartDetails, Products = products, TotalAmount = totalAmount };
+                return View(model);
+            }
+            return BadRequest();
         }
         [HttpPost]
-        public IActionResult AddToCart(Guid productId, int quantity)
+        public async Task<IActionResult> AddToCart(Guid productId, int quantity)
         {
-            //Kiểm tra xem Giỏ hàng hiện tại của người dùng
-
-            //C1
-            //var cart =_cartService.GetCartById(currentUserId);
-
-            //if (cart == null) 
-            //{
-            //    cart = new Cart { UserId = currentUserId };
-            //    _cartService.CreateCart(cart);
-            //}
-
-            //C2
-            //var cart = _cartService.GetCartById(User.Identity.GetUserId());
-
-            //if (cart == null)
-            //{
-            //    cart = new Cart { UserId = User.Identity.GetUserId() };
-            //}
-
-            //var product = _productService.GetProductById(productId);
-
-            //if (product == null)
-            //{
-            //    return HttpNotFound();
-            //}
-
-            //var cartDetail = _cartDetailService.GetAllCartDetail().FirstOrDefault(p => p.ProductId == productId /*&& p.CartId == cart.Id*/);
-
-            //if (cartDetail == null)
-            //{
-            //    cartDetail = new CartDetail
-            //    {
-            //        ProductId = productId,
-            //        //CartId = cart.Id; //Chưa xác định được giỏ hàng của người dùng hiện tại đang Login
-            //        CartId = Guid.Parse("48632772-2D15-4EA2-A863-32E317E4A3D5"),
-            //        Quantity = quantity
-            //    };
-            //    if(_cartDetailService.CreateCartDetail(cartDetail))
-            //        return RedirectToAction("Cart");
-            //}
-            //else
-            //{
-            //    cartDetail.Quantity += quantity;
-            //    if(_cartDetailService.UpdateCartDetail(cartDetail))
-            //        return RedirectToAction("Cart");
-
-            //}
-            return RedirectToAction("ProductDetail", "Home", new { id = productId });
+            try
+            {
+                GetCustomer();
+                if (ViewBag.CustomerID == null)
+                    return RedirectToAction("Login", "Home");
+                var user = ViewBag.CustomerID;
+                string requestURL = $"https://localhost:7186/api/Cart/add-to-cart";
+                var httpClient = new HttpClient();
+                CartDetailModel model = new CartDetailModel()
+                {
+                    productId = productId,
+                    quantity = quantity,
+                    customerId = user,
+                };
+                var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+                var response = await httpClient.PostAsync(requestURL, content);
+                if (response.IsSuccessStatusCode)
+                    return RedirectToAction("Cart");
+                return RedirectToAction("ProductDetail", "Home", new { id = productId });
+            }
+            catch
+            {
+                return RedirectToAction("ProductDetail", "Home", new { id = productId });
+            }
         }
 
         public IActionResult UpdateQuantity(CartViewModel model)
@@ -107,39 +109,20 @@ namespace ShopOganic.Controllers
             //}
             return RedirectToAction("Cart");
         }
-        public IActionResult Delete(Guid id)
-        {
-            //var cartDetail = _cartDetailService.GetCartDetailById(id); // Lấy ra sản phẩm trong giỏ hàng mà user định xóa
-            //var cartDetails = SessionService.GetObjFromSession(HttpContext.Session, "Delete"); //Lấy dữ liệu từ Session
-            //if (cartDetails.Count == 0)
-            //{
-            //    cartDetails.Add(cartDetail);
-            //    SessionService.SetObjToJson(HttpContext.Session, "Delete", cartDetails);
-            //}
-            //else
-            //{
-            //    if (SessionService.CheckProductInCart(cartDetail.ProductId, cartDetails))
-            //    {
-            //        var check = cartDetails.FirstOrDefault(p => p.ProductId == cartDetail.ProductId);
-            //        cartDetails.Remove(check);
-            //        cartDetail.Quantity += check.Quantity;
-            //        cartDetails.Add(cartDetail);
-            //        SessionService.SetObjToJson(HttpContext.Session, "Delete", cartDetails);
-            //    }
-            //    else
-            //    {
-            //        cartDetails.Add(cartDetail);
-            //        SessionService.SetObjToJson(HttpContext.Session, "Delete", cartDetails);
-            //    }
-            //}
 
-            //if (_cartDetailService.DeleteCartDetail(id))
-            //{
-            //    var delete = "The product that you have removed in the cart is only valid for 60 seconds!";
-            //    TempData["Delete"] = delete;
-            //    return RedirectToAction("Cart", new { delete });
-            //}
-            return HttpNotFound();
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var client = new HttpClient();
+            var aipUrl = $"https://localhost:7186/api/Cart/{id}";
+            var request = new HttpRequestMessage(HttpMethod.Delete, aipUrl);
+            var response = await client.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                
+                return RedirectToAction(nameof(Cart));
+            }
+            _notyfService.Error("Xóa thất bại");
+            return RedirectToAction(nameof(Cart));
         }
         public IActionResult ShowDelete()
         {

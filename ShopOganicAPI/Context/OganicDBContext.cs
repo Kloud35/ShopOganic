@@ -21,11 +21,9 @@ namespace ShopOganicAPI.Context
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartDetail> CartDetails { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<CategoryDetail> CategoryDetails { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<PaymentMenthod> PaymentMenthods { get; set; }
-        public DbSet<PaymentMenthodDetail> PaymentMenthodDetails { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Role> Roles { get; set; }

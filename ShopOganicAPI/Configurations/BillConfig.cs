@@ -21,6 +21,7 @@ namespace ShopOganicAPI.Configurations
             builder.HasOne(p => p.Voucher).WithMany(p => p.Bills).HasForeignKey(p => p.VoucherID);
             builder.HasOne(p => p.ShipAddress).WithMany(p => p.Bills).HasForeignKey(p => p.ShipAddressID);
             builder.HasOne(p => p.ShipMenthod).WithMany(p => p.Bills).HasForeignKey(p => p.ShipMenthodID);
+            builder.HasOne(p=>p.PaymentMenthods).WithMany(p=>p.Bill).HasForeignKey(p=>p.PaymentMenthodID);
         }
     }
 }

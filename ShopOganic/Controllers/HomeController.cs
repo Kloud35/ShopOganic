@@ -102,8 +102,7 @@ namespace ShopOganic.Controllers
 		}
 		//Hoàng
 		public async Task<IActionResult> Blog()
-		{
-
+		{ 
 			var client = new HttpClient();
 			var aipUrl = "https://localhost:7186/api/Post/get-all-post";
 			var request = new HttpRequestMessage(HttpMethod.Get, aipUrl);

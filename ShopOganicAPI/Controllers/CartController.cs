@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Query;
 using ShopOganicAPI.IServices;
 using ShopOganicAPI.Models;
 using ShopOganicAPI.Models.DTO;
@@ -23,26 +24,26 @@ namespace ShopOganicAPI.Controllers
             _iProductService = new Services<Product>();
         }
         // GET: api/<CartController>
-        [HttpGet("get-all-cart")]
-        public async Task<IActionResult> GetAllCart()
+        [HttpGet("get-all-cart-{id}")]
+        public async Task<IActionResult> GetAllCartDetail(Guid id)
         {
-            var lstcart = await _iCartDetailService.GetAllAsync();
-            if (lstcart == null) return NotFound();
-            return Ok(lstcart);
+            var lstcartDetail = await _iCartDetailService.SearchAsync(p=>p.CustomerID == id);
+            if (lstcartDetail == null) return NotFound();
+            return Ok(lstcartDetail);
         }
 
         // GET api/<CartController>/5
         [HttpGet("get-by-id-cart/{id}")]
-        public async Task<IActionResult> GetByIdBill(Guid id)
+        public async Task<IActionResult> GetByIdCartDetail(Guid id)
         {
-            var cart = await _iCartDetailService.GetByIdAsync(id);
+            var cart = await _iCartDetailService.SearchAsync(p=>p.CustomerID == id);
             if (cart == null) return BadRequest();
             return Ok(cart);
         }
 
         // POST api/<CartController>
         [HttpPost("add-to-cart")]
-        public async Task<bool> AddToCart([FromBody] CartDetailModel model)
+        public async Task<bool> CreateCartDetail([FromBody] CartDetailModel model)
         {
             var cart = await _iCartService.GetByIdAsync(model.customerId);
             if (cart == null)
@@ -82,15 +83,17 @@ namespace ShopOganicAPI.Controllers
 
         // PUT api/<CartController>/5
         [HttpPost("update-cart")]
-        public async Task<bool> UpdateBill(CartDetail cartDetail)
+        public async Task<bool> UpdateCartDetail(CartDetail cartDetail)
         {
             return await _iCartDetailService.UpdateAsync(cartDetail);
         }
 
         // DELETE api/<CartController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<bool> Delete(Guid id)
         {
+            return await _iCartDetailService.DeleteAsync(id);
+
         }
     }
 }
